@@ -15,7 +15,7 @@ export function AppShell({
       <Sidebar role={role} />
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex h-14 items-center justify-between border-b bg-white px-4">
-          <span className="text-sm text-slate-500 md:hidden">PMO Sinergia</span>
+          <span className="text-sm text-slate-500 md:hidden">PMO CollabZ</span>
           <span className="hidden text-sm text-slate-500 md:block">
             Sistema integrado de gestão de projetos
           </span>

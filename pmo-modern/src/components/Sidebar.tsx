@@ -38,7 +38,7 @@ export function Sidebar({ role }: { role: Role }) {
   return (
     <aside className="hidden w-60 shrink-0 border-r bg-white md:block">
       <div className="flex h-14 items-center border-b px-4">
-        <span className="text-lg font-semibold text-brand-700">PMO Sinergia</span>
+        <span className="text-lg font-semibold text-brand-700">PMO CollabZ</span>
       </div>
       <nav className="space-y-1 p-3">
         {items.map((item) => {

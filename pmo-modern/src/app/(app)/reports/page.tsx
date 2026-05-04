@@ -1,6 +1,6 @@
 import { ComingSoon } from "@/components/ComingSoon";
 
-export const metadata = { title: "Relatórios — PMO Sinergia" };
+export const metadata = { title: "Relatórios — PMO CollabZ" };
 
 export default function ReportsPage() {
   return (

@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { FolderKanban, AlertTriangle, Bug, GitPullRequestArrow } from "lucide-react";
 
-export const metadata = { title: "Dashboard — PMO Sinergia" };
+export const metadata = { title: "Dashboard — PMO CollabZ" };
 
 async function loadDashboard(userId: string, isAdmin: boolean) {
   // ADMIN vê tudo; demais veem só projetos onde é membro/tem access.

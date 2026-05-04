@@ -3,7 +3,7 @@ import { Providers } from "@/components/Providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "PMO Sinergia",
+  title: "PMO CollabZ",
   description: "Sistema integrado de gestão de projetos",
 };
 
