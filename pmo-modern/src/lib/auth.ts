@@ -2,7 +2,8 @@ import type { NextAuthOptions, DefaultSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "./db";
-import type { Role } from "@prisma/client";
+import type { Role } from "./enums";
+import { RoleSchema } from "./enums";
 
 declare module "next-auth" {
   interface Session {
@@ -42,11 +43,12 @@ export const authOptions: NextAuthOptions = {
         if (!user || !user.active) return null;
         const ok = await bcrypt.compare(credentials.password, user.passwordHash);
         if (!ok) return null;
+        const role = RoleSchema.parse(user.role);
         return {
           id: user.id,
           email: user.email,
           name: user.name,
-          role: user.role,
+          role,
         };
       },
     }),
@@ -68,10 +70,3 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
-
-export function canEdit(role: Role) {
-  return role === "ADMIN" || role === "MANAGER" || role === "MEMBER";
-}
-export function isAdmin(role: Role) {
-  return role === "ADMIN";
-}
