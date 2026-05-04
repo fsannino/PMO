@@ -11,6 +11,7 @@ export function ProjectTabs({ projectId }: { projectId: string }) {
     { href: `/projects/${projectId}/tasks`, label: "Tarefas" },
     { href: `/projects/${projectId}/gantt`, label: "Gantt" },
     { href: `/projects/${projectId}/measurement`, label: "Medição" },
+    { href: `/projects/${projectId}/synoptic`, label: "Sinóptico" },
     { href: `/projects/${projectId}/import`, label: "Importar" },
   ];
   return (
