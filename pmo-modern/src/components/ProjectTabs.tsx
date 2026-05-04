@@ -16,6 +16,7 @@ export function ProjectTabs({ projectId }: { projectId: string }) {
     { href: `/projects/${projectId}/risks`, label: "Riscos" },
     { href: `/projects/${projectId}/actions`, label: "Actions" },
     { href: `/projects/${projectId}/change-requests`, label: "CRs" },
+    { href: `/projects/${projectId}/reports`, label: "Relatórios" },
     { href: `/projects/${projectId}/import`, label: "Importar" },
   ];
   return (
