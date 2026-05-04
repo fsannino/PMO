@@ -1,0 +1,29 @@
+<SCRIPT LANGUAGE="VBScript" RUNAT="SERVER">
+
+Sub Session_OnStart
+		
+	'Variável que vai armazenar a informação do caminho que foi seguido pelo usuário
+	session("Caminho") = ""
+	session("Usuario") = ""
+	session("UsuarioCLI") = ""
+	session("Unidade") = 0
+	
+	'Padrão brasileiro para datas e números
+	session.lcid = 1046
+	
+End Sub
+
+'==============================================================
+' Esta rotina remove da sessão todos os valores armazenados.
+'==============================================================
+Sub Session_OnEnd
+
+	'Limpar a informação do caminho que foi seguido pelo usuário
+	Session("Caminho") = ""
+	session("Usuario") = ""
+	session("UsuarioCLI") = ""
+	session("Unidade") = 0
+
+End Sub
+
+</SCRIPT>

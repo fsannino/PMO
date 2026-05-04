@@ -1,0 +1,7 @@
+XLODBC
+1
+DSN=ss;Description=ss;UID=pmo_light;APP=Microsoft Office 2003;WSID=LIGHT-TATA061;DATABASE=PMO;Network=DBMSSOCN;Address=sssmr01,3971
+select login collate SQL_EBCDIC037_CP1_CS_AS from usuarios where login not in (  SELECT DISTINCT dadoslog2.Cod_Usuario collate SQL_EBCDIC037_CP1_CS_AS  FROM PMO.dbo.dadoslog2 dadoslog2  WHERE (dadoslog2.Data_Atualizacao Between {ts '2005-03-07 00:00:00'} And {ts '2005-03-07 23:59:59'}))
+
+
+ 

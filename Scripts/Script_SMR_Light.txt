@@ -1,0 +1,1328 @@
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[SP_INCLUIR_LOG_TAREFAS]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[SP_INCLUIR_LOG_TAREFAS]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[SP_ALTERAR_CONFIG_FECHAMENTO]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[SP_ALTERAR_CONFIG_FECHAMENTO]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[SP_ALTERAR_USUARIO]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[SP_ALTERAR_USUARIO]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[SP_ATUALIZAR_TAREFAS]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[SP_ATUALIZAR_TAREFAS]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[SP_EXCLUIR_USUARIO]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[SP_EXCLUIR_USUARIO]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[SP_INCLUIR_MEDICAO_DETALHE_TB_TEMP]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[SP_INCLUIR_MEDICAO_DETALHE_TB_TEMP]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[SP_INCLUIR_REL_TAREFAS_DETALHE_TB_TEMP]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[SP_INCLUIR_REL_TAREFAS_DETALHE_TB_TEMP]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[SP_INCLUIR_TB_TEMP]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[SP_INCLUIR_TB_TEMP]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[SP_INCLUIR_USUARIO]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[SP_INCLUIR_USUARIO]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[SP_LISTAR_CONFIG_FECHAMENTO]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[SP_LISTAR_CONFIG_FECHAMENTO]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[SP_LISTAR_CONFIRMACAO_MEDICAO]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[SP_LISTAR_CONFIRMACAO_MEDICAO]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[SP_LISTAR_MEDICAO_DETALHE]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[SP_LISTAR_MEDICAO_DETALHE]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[SP_LISTAR_PAINEL_SINOPTICO]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[SP_LISTAR_PAINEL_SINOPTICO]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[SP_LISTAR_RELATORIO_MEDICAO_DETALHE]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[SP_LISTAR_RELATORIO_MEDICAO_DETALHE]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[SP_LISTAR_RELATORIO_TAREFAS_DETALHE]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[SP_LISTAR_RELATORIO_TAREFAS_DETALHE]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[SP_LISTAR_SUMARIAS]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[SP_LISTAR_SUMARIAS]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[SP_LISTAR_TB_TEMP]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[SP_LISTAR_TB_TEMP]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[SP_LISTAR_USUARIO]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[SP_LISTAR_USUARIO]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[Criticidade]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view [dbo].[Criticidade]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[DadosEquipe]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view [dbo].[DadosEquipe]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[DadosPlan]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view [dbo].[DadosPlan]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[DadosReal]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view [dbo].[DadosReal]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[DadosSPI]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view [dbo].[DadosSPI]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[DadosSV]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view [dbo].[DadosSV]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[DadosSVDias]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view [dbo].[DadosSVDias]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[DadosCLI]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view [dbo].[DadosCLI]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[DadosLogin]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view [dbo].[DadosLogin]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[CONFIG_FECHAMENTO]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dbo].[CONFIG_FECHAMENTO]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[Log_Tarefas]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dbo].[Log_Tarefas]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[MSP_ASSIGNMENTS]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dbo].[MSP_ASSIGNMENTS]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[TabelaTemp]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dbo].[TabelaTemp]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[Usuarios]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dbo].[Usuarios]
+GO
+
+CREATE TABLE [dbo].[CONFIG_FECHAMENTO] (
+	[SIGLA_PROJ] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+	[FLAG_SEG] [bit] NULL ,
+	[HR_SEG_INICIO] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[HR_SEG_FIM] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[FLAG_TER] [bit] NULL ,
+	[HR_TER_INICIO] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[HR_TER_FIM] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[FLAG_QUA] [bit] NULL ,
+	[HR_QUA_INICIO] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[HR_QUA_FIM] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[FLAG_QUI] [bit] NULL ,
+	[HR_QUI_INICIO] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[HR_QUI_FIM] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[FLAG_SEX] [bit] NULL ,
+	[HR_SEX_INICIO] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[HR_SEX_FIM] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[FLAG_SAB] [bit] NULL ,
+	[HR_SAB_INICIO] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[HR_SAB_FIM] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[FLAG_DOM] [bit] NULL ,
+	[HR_DOM_INICIO] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[HR_DOM_FIM] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[Log_Tarefas] (
+	[Cod_Usuario] [varchar] (10) COLLATE Latin1_General_CI_AS NOT NULL ,
+	[Data_Atualizacao] [datetime] NOT NULL ,
+	[PROJ_ID] [int] NOT NULL ,
+	[TASK_UID] [int] NOT NULL ,
+	[TASK_PCT_COMP] [smallint] NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[MSP_ASSIGNMENTS] (
+	[RESERVED_DATA] [char] (1) COLLATE Latin1_General_CI_AS NULL ,
+	[PROJ_ID] [int] NULL ,
+	[ASSN_ACT_FINISH] [datetime] NULL ,
+	[ASSN_ACT_START] [datetime] NULL ,
+	[ASSN_ACWP] [decimal](25, 6) NULL ,
+	[ASSN_BCWP] [decimal](25, 6) NULL ,
+	[ASSN_BCWS] [decimal](25, 6) NULL ,
+	[ASSN_RES_TYPE] [bit] NULL ,
+	[ASSN_IS_OVERALLOCATED] [bit] NULL ,
+	[ASSN_WORK_CONTOUR] [smallint] NULL ,
+	[ASSN_START_VAR] [int] NULL ,
+	[ASSN_FINISH_VAR] [int] NULL ,
+	[ASSN_UPDATE_NEEDED] [bit] NULL ,
+	[EXT_EDIT_REF_DATA] [text] COLLATE Latin1_General_CI_AS NULL ,
+	[ASSN_UID] [int] NULL ,
+	[ASSN_HAS_LINKED_FIELDS] [bit] NULL ,
+	[ASSN_IS_CONFIRMED] [bit] NULL ,
+	[ASSN_RESPONSE_PENDING] [bit] NULL ,
+	[ASSN_HAS_NOTES] [bit] NULL ,
+	[ASSN_TEAM_STATUS_PENDING] [bit] NULL ,
+	[TASK_UID] [int] NULL ,
+	[RES_UID] [int] NULL ,
+	[ASSN_START_DATE] [datetime] NULL ,
+	[ASSN_FINISH_DATE] [datetime] NULL ,
+	[ASSN_DELAY] [int] NULL ,
+	[ASSN_DELAY_FMT] [smallint] NULL ,
+	[ASSN_LEVELING_DELAY] [int] NULL ,
+	[ASSN_COST_RATE_TABLE] [smallint] NULL ,
+	[ASSN_BASE_START] [datetime] NULL ,
+	[ASSN_BASE_FINISH] [datetime] NULL ,
+	[ASSN_MATERIAL_RATE_FMT] [smallint] NULL ,
+	[ASSN_UNITS] [decimal](25, 6) NULL ,
+	[ASSN_WORK] [decimal](25, 6) NULL ,
+	[ASSN_ACT_WORK] [decimal](25, 6) NULL ,
+	[ASSN_REG_WORK] [decimal](25, 6) NULL ,
+	[ASSN_REM_WORK] [decimal](25, 6) NULL ,
+	[ASSN_BASE_WORK] [decimal](25, 6) NULL ,
+	[ASSN_COST] [decimal](25, 6) NULL ,
+	[ASSN_ACT_COST] [decimal](25, 6) NULL ,
+	[ASSN_REM_COST] [decimal](25, 6) NULL ,
+	[ASSN_BASE_COST] [decimal](25, 6) NULL ,
+	[ASSN_BASE_COST_PER_USE] [decimal](25, 6) NULL ,
+	[ASSN_OVT_WORK] [decimal](25, 6) NULL ,
+	[ASSN_ACT_OVT_WORK] [decimal](25, 6) NULL ,
+	[ASSN_REM_OVT_WORK] [decimal](25, 6) NULL ,
+	[ASSN_ACT_OVT_COST] [decimal](25, 6) NULL ,
+	[ASSN_REM_OVT_COST] [decimal](25, 6) NULL ,
+	[ASSN_RTF_NOTES] [image] NULL 
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[TabelaTemp] (
+	[TASK_OUTLINE_NUM] [varchar] (255) COLLATE Latin1_General_CI_AS NULL ,
+	[TASK_NAME] [varchar] (255) COLLATE Latin1_General_CI_AS NULL ,
+	[TASK_OUTLINE_LEVEL] [smallint] NULL ,
+	[TASK_BASE_START] [datetime] NULL ,
+	[TASK_BASE_FINISH] [datetime] NULL ,
+	[TASK_START_DATE] [datetime] NULL ,
+	[TASK_FINISH_DATE] [datetime] NULL ,
+	[TASK_PCT_COMP] [smallint] NULL ,
+	[TASK_IS_SUMMARY] [bit] NULL ,
+	[TASK_IS_EXTERNAL] [bit] NULL ,
+	[PROJ_ID] [int] NULL ,
+	[PROJ_NAME] [varchar] (255) COLLATE Latin1_General_CI_AS NULL ,
+	[TASK_UID] [int] NULL ,
+	[TASK_ID] [int] NULL ,
+	[TASK_DUR] [int] NULL ,
+	[CLI] [varchar] (255) COLLATE Latin1_General_CI_AS NULL ,
+	[Frente] [varchar] (255) COLLATE Latin1_General_CI_AS NULL ,
+	[Equipe] [varchar] (255) COLLATE Latin1_General_CI_AS NULL ,
+	[Governanca] [varchar] (255) COLLATE Latin1_General_CI_AS NULL ,
+	[RespInt] [varchar] (255) COLLATE Latin1_General_CI_AS NULL ,
+	[Area] [varchar] (255) COLLATE Latin1_General_CI_AS NULL ,
+	[Unidade] [varchar] (255) COLLATE Latin1_General_CI_AS NULL ,
+	[Login] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[Arquivo] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[Usuario] [varchar] (10) COLLATE Latin1_General_CI_AS NULL ,
+	[Tipo] [varchar] (1) COLLATE Latin1_General_CI_AS NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[Usuarios] (
+	[Login] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+	[Nome_Usuario] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+	[Senha] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+) ON [PRIMARY]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE VIEW DadosCLI AS 
+SELECT MSP_TEXT_FIELDS.PROJ_ID, 
+	MSP_TEXT_FIELDS.TEXT_REF_UID, 
+	MSP_TEXT_FIELDS.TEXT_FIELD_ID, 
+	MSP_CONVERSIONS.CONV_STRING, 
+	MSP_TEXT_FIELDS.TEXT_VALUE 
+FROM MSP_CONVERSIONS, MSP_TEXT_FIELDS 
+WHERE MSP_TEXT_FIELDS.TEXT_FIELD_ID = MSP_CONVERSIONS.CONV_VALUE AND 
+	(MSP_CONVERSIONS.CONV_STRING = 'Task Text11') 
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE VIEW DadosLogin AS 
+SELECT MSP_TEXT_FIELDS.PROJ_ID, 
+	MSP_TEXT_FIELDS.TEXT_REF_UID, 
+	MSP_TEXT_FIELDS.TEXT_FIELD_ID, 
+	MSP_CONVERSIONS.CONV_STRING,
+	MSP_TEXT_FIELDS.TEXT_VALUE 
+FROM MSP_CONVERSIONS, MSP_TEXT_FIELDS 
+WHERE MSP_TEXT_FIELDS.TEXT_FIELD_ID = MSP_CONVERSIONS.CONV_VALUE AND 
+	(MSP_CONVERSIONS.CONV_STRING = 'Task Text28') 
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE VIEW dbo.Criticidade
+AS
+SELECT     dbo.MSP_TEXT_FIELDS.PROJ_ID, dbo.MSP_TEXT_FIELDS.TEXT_REF_UID, dbo.MSP_TEXT_FIELDS.TEXT_FIELD_ID, 
+                      dbo.MSP_CONVERSIONS.CONV_STRING, dbo.MSP_TEXT_FIELDS.TEXT_VALUE
+FROM         dbo.MSP_CONVERSIONS INNER JOIN
+                      dbo.MSP_TEXT_FIELDS ON dbo.MSP_CONVERSIONS.CONV_VALUE = dbo.MSP_TEXT_FIELDS.TEXT_FIELD_ID
+WHERE     (dbo.MSP_CONVERSIONS.CONV_STRING = 'Task Text20')
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE VIEW DadosEquipe AS 
+SELECT MSP_TEXT_FIELDS.PROJ_ID, 
+	MSP_TEXT_FIELDS.TEXT_REF_UID, 
+	MSP_TEXT_FIELDS.TEXT_FIELD_ID, 
+	MSP_CONVERSIONS.CONV_STRING, 
+	MSP_TEXT_FIELDS.TEXT_VALUE 
+FROM MSP_CONVERSIONS, MSP_TEXT_FIELDS 
+WHERE MSP_TEXT_FIELDS.TEXT_FIELD_ID = MSP_CONVERSIONS.CONV_VALUE AND
+	(MSP_CONVERSIONS.CONV_STRING = 'Task Text12') 
+
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE VIEW DadosPlan AS 
+SELECT MSP_NUMBER_FIELDS.PROJ_ID, 
+	MSP_NUMBER_FIELDS.NUM_REF_UID, 
+	MSP_NUMBER_FIELDS.NUM_FIELD_ID, 
+	MSP_CONVERSIONS.CONV_STRING, 
+	MSP_NUMBER_FIELDS.NUM_VALUE 
+FROM MSP_CONVERSIONS, MSP_NUMBER_FIELDS 
+WHERE MSP_NUMBER_FIELDS.NUM_FIELD_ID = MSP_CONVERSIONS.CONV_VALUE AND
+	(MSP_CONVERSIONS.CONV_STRING = 'Task Number4') 
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE VIEW DadosReal AS 
+SELECT MSP_NUMBER_FIELDS.PROJ_ID, 
+	MSP_NUMBER_FIELDS.NUM_REF_UID, 
+	MSP_NUMBER_FIELDS.NUM_FIELD_ID, 
+	MSP_CONVERSIONS.CONV_STRING, 
+	MSP_NUMBER_FIELDS.NUM_VALUE 
+FROM MSP_CONVERSIONS, MSP_NUMBER_FIELDS 
+WHERE MSP_NUMBER_FIELDS.NUM_FIELD_ID = MSP_CONVERSIONS.CONV_VALUE AND
+	(MSP_CONVERSIONS.CONV_STRING = 'Task Number5') 
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE VIEW DadosSPI AS 
+SELECT MSP_NUMBER_FIELDS.PROJ_ID, 
+	MSP_NUMBER_FIELDS.NUM_REF_UID, 
+	MSP_NUMBER_FIELDS.NUM_FIELD_ID, 
+	MSP_CONVERSIONS.CONV_STRING, 
+	MSP_NUMBER_FIELDS.NUM_VALUE 
+FROM MSP_CONVERSIONS, MSP_NUMBER_FIELDS 
+WHERE MSP_NUMBER_FIELDS.NUM_FIELD_ID = MSP_CONVERSIONS.CONV_VALUE AND
+	(MSP_CONVERSIONS.CONV_STRING = 'Task Number1') 
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE VIEW DadosSV AS 
+SELECT MSP_NUMBER_FIELDS.PROJ_ID, 
+	MSP_NUMBER_FIELDS.NUM_REF_UID, 
+	MSP_NUMBER_FIELDS.NUM_FIELD_ID, 
+	MSP_CONVERSIONS.CONV_STRING, 
+	MSP_NUMBER_FIELDS.NUM_VALUE 
+FROM MSP_CONVERSIONS, MSP_NUMBER_FIELDS 
+WHERE MSP_NUMBER_FIELDS.NUM_FIELD_ID = MSP_CONVERSIONS.CONV_VALUE AND
+	(MSP_CONVERSIONS.CONV_STRING = 'Task Number2') 
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE VIEW DadosSVDias AS 
+SELECT MSP_DURATION_FIELDS.PROJ_ID, 
+	MSP_DURATION_FIELDS.DUR_REF_UID, 
+	MSP_DURATION_FIELDS.DUR_FIELD_ID, 
+	MSP_CONVERSIONS.CONV_STRING, 
+	MSP_DURATION_FIELDS.DUR_VALUE 
+FROM MSP_CONVERSIONS, MSP_DURATION_FIELDS 
+WHERE MSP_DURATION_FIELDS.DUR_FIELD_ID = MSP_CONVERSIONS.CONV_VALUE AND
+	(MSP_CONVERSIONS.CONV_STRING = 'Task Duration1') 
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+CREATE PROCEDURE SP_INCLUIR_LOG_TAREFAS
+(
+@Login 		VARCHAR(10),
+@Projeto                          NUMERIC(9),
+@UID                              NUMERIC(9),
+@Complete 		INT
+)
+
+AS
+
+SET NOCOUNT ON
+
+INSERT INTO Log_Tarefas
+VALUES
+(@Login, GETDATE(), @Projeto, @UID, @Complete)
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE PROCEDURE SP_ALTERAR_CONFIG_FECHAMENTO
+(
+@SIGLA_PROJ varchar(10),
+@FLAG_SEG NUMERIC(9),
+@HR_SEG_INICIO VARCHAR(8),
+@HR_SEG_FIM VARCHAR(8),
+@FLAG_TER NUMERIC(9),
+@HR_TER_INICIO VARCHAR(8),
+@HR_TER_FIM VARCHAR(8),
+@FLAG_QUA NUMERIC(9),
+@HR_QUA_INICIO VARCHAR(8),
+@HR_QUA_FIM VARCHAR(8),
+@FLAG_QUI NUMERIC(9),
+@HR_QUI_INICIO VARCHAR(8),
+@HR_QUI_FIM VARCHAR(8),
+@FLAG_SEX NUMERIC(9),
+@HR_SEX_INICIO VARCHAR(8),
+@HR_SEX_FIM VARCHAR(8),
+@FLAG_SAB NUMERIC(9),
+@HR_SAB_INICIO VARCHAR(8),
+@HR_SAB_FIM VARCHAR(8),
+@FLAG_DOM NUMERIC(9),
+@HR_DOM_INICIO VARCHAR(8),
+@HR_DOM_FIM VARCHAR(8)
+)
+AS
+UPDATE 
+	CONFIG_FECHAMENTO
+SET
+	FLAG_SEG = @FLAG_SEG,
+	HR_SEG_INICIO = @HR_SEG_INICIO,
+	HR_SEG_FIM = @HR_SEG_FIM,
+	FLAG_TER = @FLAG_TER,
+	HR_TER_INICIO = @HR_TER_INICIO,
+	HR_TER_FIM = @HR_TER_FIM,
+	FLAG_QUA = @FLAG_QUA,
+	HR_QUA_INICIO = @HR_QUA_INICIO,
+	HR_QUA_FIM = @HR_QUA_FIM,
+	FLAG_QUI = @FLAG_QUI,
+	HR_QUI_INICIO = @HR_QUI_INICIO,
+	HR_QUI_FIM = @HR_QUI_FIM,
+	FLAG_SEX = @FLAG_SEX,
+	HR_SEX_INICIO = @HR_SEX_INICIO,
+	HR_SEX_FIM = @HR_SEX_FIM,
+	FLAG_SAB = @FLAG_SAB,
+	HR_SAB_INICIO = @HR_SAB_INICIO,
+	HR_SAB_FIM = @HR_SAB_FIM,
+	FLAG_DOM = @FLAG_DOM,
+	HR_DOM_INICIO = @HR_DOM_INICIO,
+	HR_DOM_FIM = @HR_DOM_FIM
+WHERE
+	SIGLA_PROJ = @SIGLA_PROJ
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+
+
+CREATE PROCEDURE SP_ALTERAR_USUARIO 
+(
+@Login			VARCHAR(10),
+@NomeUsuario		VARCHAR(50),
+@Senha		VARCHAR(10)
+)
+AS
+UPDATE 
+	Usuarios
+SET
+	Nome_Usuario = @NomeUsuario,
+	Senha = @Senha
+WHERE
+	Login = @Login
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+CREATE PROCEDURE SP_ATUALIZAR_TAREFAS 
+(
+@Projeto int,
+@ID int,
+@UID int,
+@Complete int
+)
+AS
+	
+	UPDATE  MSP_TASKS Set TASK_PCT_COMP = @Complete
+	Where PROJ_ID = @Projeto AND 
+		TASK_UID = @UID AND 
+		TASK_ID = @ID
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+
+
+
+
+CREATE PROCEDURE SP_EXCLUIR_USUARIO 
+(
+@Login			VARCHAR(10)
+)
+AS
+DELETE
+	Usuarios
+WHERE
+	Login = @Login
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE PROCEDURE SP_INCLUIR_MEDICAO_DETALHE_TB_TEMP
+(
+@Usuario varchar(10)
+)
+AS
+DECLARE @strSQL VARCHAR(2000)
+DECLARE @dtAtual as datetime
+SET @dtAtual = GETDATE()
+WHILE  DATEPART(dw, @dtAtual) <> 3 
+BEGIN
+	SET @dtAtual = DATEADD(d,1,@dtAtual)
+END
+
+SET NOCOUNT ON
+
+delete from TabelaTemp Where Upper(RTrim(LTrim(Usuario))) = Upper(RTrim(LTrim(@Usuario))) AND Upper(RTrim(LTrim(Tipo))) = 'M'
+
+SET @strSQL = 'Insert into TabelaTemp SELECT TK.TASK_OUTLINE_NUM, '
+SET @strSQL = @strSQL + 'TK.TASK_NAME, '
+SET @strSQL = @strSQL + 'TK.TASK_OUTLINE_LEVEL, '
+SET @strSQL = @strSQL + 'TK.TASK_BASE_START, '
+SET @strSQL = @strSQL + 'TK.TASK_BASE_FINISH, '
+SET @strSQL = @strSQL + 'TK.TASK_START_DATE, '
+SET @strSQL = @strSQL + 'TK.TASK_FINISH_DATE, '
+SET @strSQL = @strSQL + 'TK.TASK_PCT_COMP, '
+SET @strSQL = @strSQL + 'TK.TASK_IS_SUMMARY, '
+SET @strSQL = @strSQL + 'TK.TASK_IS_EXTERNAL, '
+SET @strSQL = @strSQL + 'TK.PROJ_ID, '
+SET @strSQL = @strSQL + 'PJ.PROJ_NAME, '
+SET @strSQL = @strSQL + 'TK.TASK_UID, '
+SET @strSQL = @strSQL + 'TK.TASK_ID, '
+SET @strSQL = @strSQL + 'TK.TASK_DUR, '
+SET @strSQL = @strSQL + 'UPPER(DC.TEXT_VALUE) as CLI, '
+SET @strSQL = @strSQL + 'Null as Frente, '
+SET @strSQL = @strSQL + 'Null as Equipe, '
+SET @strSQL = @strSQL + 'Null as Governanca, '
+SET @strSQL = @strSQL + 'Null as RespInt, '
+SET @strSQL = @strSQL + 'Null as Area, '
+SET @strSQL = @strSQL + 'Null as Unidade, '
+SET @strSQL = @strSQL + 'UPPER(LTrim(RTrim(DL.TEXT_VALUE))) as Login, '
+SET @strSQL = @strSQL + 'Null as Arquivo, '
+SET @strSQL = @strSQL + '''' +  @Usuario + ''' as Usuario, '
+SET @strSQL = @strSQL + '''M'' as Tipo '
+
+SET @strSQL = @strSQL + 'FROM MSP_PROJECTS PJ, MSP_TASKS TK left outer join DadosCLI DC on '
+SET @strSQL = @strSQL + 'TK.PROJ_ID = DC.PROJ_ID and TK.TASK_UID = DC.TEXT_REF_UID '
+SET @strSQL = @strSQL + 'left outer join DadosLogin DL on '
+SET @strSQL = @strSQL + 'TK.PROJ_ID = DL.PROJ_ID and TK.TASK_UID = DL.TEXT_REF_UID '
+
+SET @strSQL = @strSQL + 'WHERE PJ.PROJ_ID = TK.PROJ_ID '
+SET @strSQL = @strSQL + ' And (TK.TASK_ID IS NOT NULL)  '
+SET @strSQL = @strSQL + ' And (TK.TASK_ID <> 0) '
+SET @strSQL = @strSQL + ' And TK.TASK_START_DATE <= '''  + CONVERT(VARCHAR(8),@dtAtual,112) + ' 23:59:59'''
+SET @strSQL = @strSQL + ' And (TK.TASK_PCT_COMP < 100) '
+SET @strSQL = @strSQL + ' And (TK.TASK_IS_SUMMARY <> 1) '
+
+
+SET @strSQL = @strSQL + ' And UPPER(LTrim(RTrim(DL.TEXT_VALUE))) LIKE ''%' +  UPPER(LTrim(RTrim(@Usuario)))+ '%'''
+
+
+SET @strSQL = @strSQL + ' Order By TK.PROJ_ID, TK.TASK_ID '
+
+EXECUTE (@strSQL)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE PROCEDURE SP_INCLUIR_REL_TAREFAS_DETALHE_TB_TEMP
+(
+@Usuario varchar(10),
+@Frente varchar(255),
+@Equipe varchar(255) = Null
+)
+AS
+DECLARE @strSQL VARCHAR(2000)
+DECLARE @dtAtual as datetime
+SET @dtAtual = GETDATE()
+
+
+delete from TabelaTemp Where Upper(RTrim(LTrim(Usuario))) = Upper(RTrim(LTrim(@Usuario))) AND Upper(RTrim(LTrim(Tipo))) = 'C'
+
+
+SET @strSQL = 'Insert into TabelaTemp SELECT TK.TASK_OUTLINE_NUM, '
+SET @strSQL = @strSQL + 'TK.TASK_NAME, '
+SET @strSQL = @strSQL + 'TK.TASK_OUTLINE_LEVEL, '
+SET @strSQL = @strSQL + 'TK.TASK_BASE_START, '
+SET @strSQL = @strSQL + 'TK.TASK_BASE_FINISH, '
+SET @strSQL = @strSQL + 'TK.TASK_START_DATE, '
+SET @strSQL = @strSQL + 'TK.TASK_FINISH_DATE, '
+SET @strSQL = @strSQL + 'TK.TASK_PCT_COMP, '
+SET @strSQL = @strSQL + 'TK.TASK_IS_SUMMARY, '
+SET @strSQL = @strSQL + 'TK.TASK_IS_EXTERNAL, '
+SET @strSQL = @strSQL + 'TK.PROJ_ID, '
+SET @strSQL = @strSQL + 'PJ.PROJ_NAME, '
+SET @strSQL = @strSQL + 'TK.TASK_UID, '
+SET @strSQL = @strSQL + 'TK.TASK_ID, '
+SET @strSQL = @strSQL + 'TK.TASK_DUR, '
+SET @strSQL = @strSQL + 'UPPER(DC.TEXT_VALUE) as CLI, '
+SET @strSQL = @strSQL + 'Null as Frente, '
+SET @strSQL = @strSQL + 'UPPER(DE.TEXT_VALUE) as Equipe, '
+SET @strSQL = @strSQL + 'Null as Governanca, '
+SET @strSQL = @strSQL + 'Null as RespInt, '
+SET @strSQL = @strSQL + 'Null as  Area,'
+SET @strSQL = @strSQL + 'Null as  Unidade, '
+SET @strSQL = @strSQL + 'UPPER(DL.TEXT_VALUE) as  Login, '
+SET @strSQL = @strSQL + 'Null as  Arquivo, '
+
+SET @strSQL = @strSQL + '''' +  @Usuario + ''' as Usuario, '
+SET @strSQL = @strSQL + '''C'' as Tipo '
+
+SET @strSQL = @strSQL + 'FROM MSP_PROJECTS PJ, MSP_TASKS TK left outer join DadosCLI DC on '
+SET @strSQL = @strSQL + 'TK.PROJ_ID = DC.PROJ_ID and TK.TASK_UID = DC.TEXT_REF_UID '
+SET @strSQL = @strSQL + 'left outer join DadosEquipe DE on '
+SET @strSQL = @strSQL + 'TK.PROJ_ID = DE.PROJ_ID and TK.TASK_UID = DE.TEXT_REF_UID '
+SET @strSQL = @strSQL + 'left outer join DadosLogin DL on '
+SET @strSQL = @strSQL + 'TK.PROJ_ID = DL.PROJ_ID and TK.TASK_UID = DL.TEXT_REF_UID '
+
+SET @strSQL = @strSQL + 'WHERE PJ.PROJ_ID = TK.PROJ_ID '
+SET @strSQL = @strSQL + ' And (TK.TASK_ID IS NOT NULL)  '
+SET @strSQL = @strSQL + ' And (TK.TASK_ID <> 0) '
+SET @strSQL = @strSQL + ' And (TK.TASK_IS_SUMMARY <> 1) '
+SET @strSQL = @strSQL + ' And TK.TASK_PCT_COMP < 100'
+SET @strSQL = @strSQL + ' And CONVERT(VARCHAR(8),TK.TASK_START_DATE,112) <= '''  + CONVERT(VARCHAR(8),GETDATE(),112) + ''''
+SET @strSQL = @strSQL + ' And TK.PROJ_ID = 3 '
+
+IF @Equipe IS NOT NULL
+BEGIN
+	SET @strSQL = @strSQL + '  And UPPER(LTrim(RTrim(DE.TEXT_VALUE))) = ''' +  UPPER(LTrim(RTrim(@Equipe)))+ ''''
+END
+ELSE
+BEGIN
+
+	IF @Frente = 'TI' OR @Frente = 'INT'
+	BEGIN
+		SET @strSQL = @strSQL + '  And UPPER(LTrim(RTrim(DE.TEXT_VALUE))) = ''' +  UPPER(LTrim(RTrim(@Frente)))+ ''''
+	END
+	ELSE
+	BEGIN
+		SET @strSQL = @strSQL + '  And UPPER(LTrim(RTrim(DE.TEXT_VALUE))) IN ' + CASE Upper(RTrim(LTrim(@Frente)))
+        	 WHEN 'GM' THEN '(''GM-AO'', ''GM-CO'', ''GM-MO'', ''GM-SUP'', ''GM-TR'')'
+	         WHEN 'FI' THEN '(''INT-ECCS'', ''INT-FT'', ''INT-FI'')'
+        	 WHEN 'SD+P&C' THEN '(''INT-SD'', ''INT-PC'')'
+	         WHEN 'PX+MES' THEN '(''INT-LT'', ''INT-MES'', ''INT-CBS'', ''INT-PM'', ''INT-PO'', ''INT-PP'' , ''INT-PS'', ''INT-QM'')'
+		END
+	END
+
+
+END
+
+SET @strSQL = @strSQL + ' Order By TK.PROJ_ID, TK.TASK_ID '
+
+EXECUTE (@strSQL)
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+
+
+CREATE PROCEDURE SP_INCLUIR_TB_TEMP
+(
+@TASK_OUTLINE_NUM varchar(255),
+@TASK_NAME varchar(255),
+@TASK_OUTLINE_LEVEL smallint, 
+@TASK_BASE_START Datetime, 
+@TASK_BASE_FINISH Datetime, 
+@TASK_START_DATE Datetime, 
+@TASK_FINISH_DATE Datetime, 
+@TASK_PCT_COMP smallint, 
+@TASK_IS_SUMMARY bit, 
+@TASK_IS_EXTERNAL bit, 
+@PROJ_ID int, 
+@PROJ_NAME varchar(255), 
+@TASK_UID int, 
+@TASK_ID int, 
+@TASK_DUR int, 
+@CLI varchar(255), 
+@Frente varchar(255), 
+@Equipe varchar(255), 
+@Governanca varchar(255),
+@RespInt varchar(255), 
+@Area varchar(255), 
+@Unidade varchar(255), 
+@Login varchar(255), 
+@Arquivo varchar(255), 
+@Usuario varchar(10),
+@Tipo varchar(1)
+)
+
+AS
+
+INSERT INTO TabelaTemp VALUES (@TASK_OUTLINE_NUM,
+					@TASK_NAME,
+					@TASK_OUTLINE_LEVEL, 
+					@TASK_BASE_START, 
+					@TASK_BASE_FINISH, 
+					@TASK_START_DATE, 
+					@TASK_FINISH_DATE, 
+					@TASK_PCT_COMP, 
+					@TASK_IS_SUMMARY, 
+					@TASK_IS_EXTERNAL, 
+					@PROJ_ID, 
+					@PROJ_NAME, 
+					@TASK_UID, 
+					@TASK_ID, 
+					@TASK_DUR, 
+					@CLI, 
+					@Frente, 
+					@Equipe, 
+					@Governanca,
+					@RespInt, 
+					@Area, 
+					@Unidade, 
+					@Login, 
+					@Arquivo,
+					@Usuario,
+					@Tipo)
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+
+
+CREATE PROCEDURE SP_INCLUIR_USUARIO 
+(
+@Login			VARCHAR(10),
+@NomeUsuario		VARCHAR(50),
+@Senha		VARCHAR(10)
+)
+AS
+INSERT INTO Usuarios
+VALUES
+(@Login, @NomeUsuario, @Senha)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE PROCEDURE SP_LISTAR_CONFIG_FECHAMENTO
+(
+@SIGLA_PROJ varchar(10) = Null
+)
+AS
+
+IF @SIGLA_PROJ IS Null
+BEGIN
+	Select * 
+	From CONFIG_FECHAMENTO
+END
+ELSE
+BEGIN
+	Select * 
+	From CONFIG_FECHAMENTO
+	Where SIGLA_PROJ = @SIGLA_PROJ
+END
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+CREATE PROCEDURE SP_LISTAR_CONFIRMACAO_MEDICAO
+(
+@Usuario varchar(10)
+)
+AS
+
+SELECT Log_Tarefas.Cod_Usuario, 
+	Usuarios.Nome_Usuario AS Nome, 
+	Log_Tarefas.Data_Atualizacao, 
+	CONVERT(varchar(10),Log_Tarefas.Data_Atualizacao,103) as Data,
+	MSP_PROJECTS.PROJ_NAME, 
+	Log_Tarefas.TASK_UID,
+	MSP_TASKS.TASK_NAME,
+	CONVERT(varchar(10),MSP_TASKS.TASK_START_DATE,103) as TASK_START_DATE, 
+	CONVERT(varchar(10),MSP_TASKS.TASK_FINISH_DATE,103) as TASK_FINISH_DATE, 
+	Log_Tarefas.TASK_PCT_COMP
+FROM Log_Tarefas INNER JOIN Usuarios 
+	ON Log_Tarefas.Cod_Usuario = Usuarios.Login COLLATE Latin1_General_CI_AS 
+	INNER JOIN MSP_PROJECTS ON Log_Tarefas.PROJ_ID = MSP_PROJECTS.PROJ_ID 
+	INNER JOIN MSP_TASKS ON Log_Tarefas.TASK_UID = MSP_TASKS.TASK_UID AND Log_Tarefas.PROJ_ID = MSP_TASKS.PROJ_ID 
+Where CONVERT(VARCHAR(8),Data_Atualizacao,112) = CONVERT(VARCHAR(8),getdate(),112) AND 
+	UPPER(RTRIM(LTRIM(Log_Tarefas.Cod_Usuario))) = UPPER(RTRIM(LTRIM(@Usuario)))
+Order By MSP_PROJECTS.PROJ_NAME, Log_Tarefas.Data_Atualizacao desc
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE PROCEDURE SP_LISTAR_MEDICAO_DETALHE 
+(
+@Usuario varchar(10),
+@Tipo varchar(1)
+)
+AS
+DECLARE @strSQL VARCHAR(2000)
+
+SET @strSQL = 'SELECT TASK_OUTLINE_NUM, '
+SET @strSQL = @strSQL + 'TASK_NAME, '
+SET @strSQL = @strSQL + 'TASK_OUTLINE_LEVEL, '
+SET @strSQL = @strSQL + 'CONVERT(varchar(10),TASK_BASE_START,103) as TASK_BASE_START, '
+SET @strSQL = @strSQL + 'CONVERT(varchar(10),TASK_BASE_FINISH,103) as TASK_BASE_FINISH, '
+SET @strSQL = @strSQL + 'CONVERT(varchar(10),TASK_START_DATE,103) as TASK_START_DATE, '
+SET @strSQL = @strSQL + 'CONVERT(varchar(10),TASK_FINISH_DATE,103) as TASK_FINISH_DATE, '
+SET @strSQL = @strSQL + 'TASK_PCT_COMP, '
+SET @strSQL = @strSQL + 'TASK_IS_SUMMARY, '
+SET @strSQL = @strSQL + 'TASK_IS_EXTERNAL, '
+SET @strSQL = @strSQL + 'PROJ_ID, '
+SET @strSQL = @strSQL + 'PROJ_NAME, '
+SET @strSQL = @strSQL + 'TASK_UID, '
+SET @strSQL = @strSQL + 'TASK_ID, '
+SET @strSQL = @strSQL + '(TASK_DUR / 4800) as DURACAO, '
+SET @strSQL = @strSQL + 'CLI, '
+SET @strSQL = @strSQL + 'Frente, '
+SET @strSQL = @strSQL + 'Equipe, '
+SET @strSQL = @strSQL + 'Login, '
+SET @strSQL = @strSQL + 'Arquivo, '
+SET @strSQL = @strSQL + 'Governanca '
+SET @strSQL = @strSQL + 'FROM TabelaTemp '
+
+SET @strSQL = @strSQL + ' Where UPPER(LTrim(RTrim(Usuario))) = ''' +  UPPER(LTrim(RTrim(@Usuario)))+ ''''
+SET @strSQL = @strSQL + ' AND  UPPER(LTrim(RTrim(Tipo))) = ''' +  UPPER(LTrim(RTrim(@Tipo)))+ ''''
+
+SET @strSQL = @strSQL + ' Order By PROJ_ID, TASK_ID '
+
+EXECUTE (@strSQL)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE PROCEDURE SP_LISTAR_PAINEL_SINOPTICO
+AS
+
+SELECT TK.TASK_OUTLINE_NUM, 
+	TK.TASK_OUTLINE_LEVEL, 
+	TK.TASK_NAME, 
+	CONVERT(varchar(10),TK.TASK_START_DATE,103) as TASK_START_DATE, 
+	CONVERT(varchar(10),TK.TASK_FINISH_DATE,103) as TASK_FINISH_DATE, 
+	TK.TASK_PCT_COMP, 
+	TK.TASK_IS_SUMMARY, 
+	TK.TASK_UID, 
+	TK.TASK_ID, 
+	(TK.TASK_DUR / 4800) as DURACAO, 
+	DC.TEXT_VALUE as CRITICIDADE, 
+	ROUND(DP.NUM_VALUE,2) as Planejado
+FROM MSP_TASKS TK left outer join Criticidade DC on 
+	TK.PROJ_ID = DC.PROJ_ID and TK.TASK_UID = DC.TEXT_REF_UID 
+	left outer join DadosPlan DP on 
+	TK.PROJ_ID = DP.PROJ_ID and TK.TASK_UID = DP.NUM_REF_UID 
+WHERE 	TK.TASK_UID <> 0 AND
+	TK.TASK_PCT_COMP <> 100 AND
+	TK.PROJ_ID = 1
+ORDER BY TK.TASK_ID
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE PROCEDURE SP_LISTAR_RELATORIO_MEDICAO_DETALHE 
+
+AS
+
+SELECT TK.TASK_OUTLINE_NUM, 
+	TK.TASK_NAME, 
+	TK.TASK_OUTLINE_LEVEL, 
+	CONVERT(varchar(10),TK.TASK_BASE_START,103) as TASK_BASE_START, 
+	CONVERT(varchar(10),TK.TASK_BASE_FINISH,103) as TASK_BASE_FINISH, 
+	CONVERT(varchar(10),TK.TASK_START_DATE,103) as TASK_START_DATE, 
+	CONVERT(varchar(10),TK.TASK_FINISH_DATE,103) as TASK_FINISH_DATE, 
+	TK.TASK_PCT_COMP, 
+	TK.TASK_IS_SUMMARY, 
+	TK.TASK_IS_EXTERNAL, 
+	TK.PROJ_ID, 
+	PJ.PROJ_NAME, 
+	TK.TASK_UID, 
+	TK.TASK_ID, 
+	(TK.TASK_DUR / 4800) as DURACAO, 
+	UPPER(DC.TEXT_VALUE) as CLI,
+	UPPER(DE.TEXT_VALUE) as Equipe 
+FROM MSP_PROJECTS PJ, MSP_TASKS TK left outer join DadosCLI DC on 
+	TK.PROJ_ID = DC.PROJ_ID and TK.TASK_UID = DC.TEXT_REF_UID 
+	left outer join DadosEquipe DE on 
+	TK.PROJ_ID = DE.PROJ_ID and TK.TASK_UID = DE.TEXT_REF_UID
+WHERE PJ.PROJ_ID = TK.PROJ_ID 
+	And (TK.TASK_ID IS NOT NULL)
+	And (TK.TASK_ID <> 0) 
+Order By TK.PROJ_ID, TK.TASK_ID 
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE PROCEDURE SP_LISTAR_RELATORIO_TAREFAS_DETALHE 
+(
+@Usuario varchar(10),
+@Tipo varchar(1)
+)
+AS
+DECLARE @strSQL VARCHAR(2000)
+
+SET @strSQL = 'SELECT TT.TASK_OUTLINE_NUM, '
+SET @strSQL = @strSQL + 'TT.TASK_NAME, '
+SET @strSQL = @strSQL + 'TT.TASK_OUTLINE_LEVEL, '
+SET @strSQL = @strSQL + 'CONVERT(varchar(10),TT.TASK_BASE_START,103) as TASK_BASE_START, '
+SET @strSQL = @strSQL + 'CONVERT(varchar(10),TT.TASK_BASE_FINISH,103) as TASK_BASE_FINISH, '
+SET @strSQL = @strSQL + 'CONVERT(varchar(10),TT.TASK_START_DATE,103) as TASK_START_DATE, '
+SET @strSQL = @strSQL + 'CONVERT(varchar(10),TT.TASK_FINISH_DATE,103) as TASK_FINISH_DATE, '
+SET @strSQL = @strSQL + 'TT.TASK_PCT_COMP, '
+SET @strSQL = @strSQL + 'TT.TASK_IS_SUMMARY, '
+SET @strSQL = @strSQL + 'TT.TASK_IS_EXTERNAL, '
+SET @strSQL = @strSQL + 'TT.PROJ_ID, '
+SET @strSQL = @strSQL + 'TT.PROJ_NAME, '
+SET @strSQL = @strSQL + 'TT.TASK_UID, '
+SET @strSQL = @strSQL + 'TT.TASK_ID, '
+SET @strSQL = @strSQL + '(TT.TASK_DUR / 4800) as DURACAO, '
+SET @strSQL = @strSQL + 'TT.RespInt, '
+SET @strSQL = @strSQL + 'TT.CLI, '
+SET @strSQL = @strSQL + 'TT.Frente, '
+SET @strSQL = @strSQL + 'TT.Equipe, '
+SET @strSQL = @strSQL + 'TT.Governanca, '
+SET @strSQL = @strSQL + 'TT.Area,'
+SET @strSQL = @strSQL + 'TT.Arquivo, '
+SET @strSQL = @strSQL + 'TT.Unidade, '
+SET @strSQL = @strSQL + 'TT.Login, '
+SET @strSQL = @strSQL + 'DP.NUM_VALUE as Perc_Plan, '
+SET @strSQL = @strSQL + 'DR.NUM_VALUE as Perc_Real, '
+SET @strSQL = @strSQL + 'SP.NUM_VALUE as SPI, '
+SET @strSQL = @strSQL + 'SV.NUM_VALUE as Perc_SV, '
+SET @strSQL = @strSQL + '(SD.DUR_VALUE / 4800) as SV_DIAS '
+
+SET @strSQL = @strSQL + 'FROM TabelaTemp TT '
+SET @strSQL = @strSQL + 'left outer join DadosPlan DP on '
+SET @strSQL = @strSQL + 'TT.PROJ_ID = DP.PROJ_ID and TT.TASK_UID = DP.NUM_REF_UID '
+SET @strSQL = @strSQL + 'left outer join DadosReal DR on '
+SET @strSQL = @strSQL + 'TT.PROJ_ID = DR.PROJ_ID and TT.TASK_UID = DR.NUM_REF_UID '
+SET @strSQL = @strSQL + 'left outer join DadosSPI SP on '
+SET @strSQL = @strSQL + 'TT.PROJ_ID = SP.PROJ_ID and TT.TASK_UID = SP.NUM_REF_UID '
+SET @strSQL = @strSQL + 'left outer join DadosSV SV on '
+SET @strSQL = @strSQL + 'TT.PROJ_ID = SV.PROJ_ID and TT.TASK_UID = SV.NUM_REF_UID '
+SET @strSQL = @strSQL + 'left outer join DadosSVDias SD on '
+SET @strSQL = @strSQL + 'TT.PROJ_ID = SD.PROJ_ID and TT.TASK_UID = SD.DUR_REF_UID '
+
+SET @strSQL = @strSQL + ' Where UPPER(LTrim(RTrim(TT.Usuario))) = ''' +  UPPER(LTrim(RTrim(@Usuario)))+ ''''
+SET @strSQL = @strSQL + ' AND  UPPER(LTrim(RTrim(TT.Tipo))) = ''' +  UPPER(LTrim(RTrim(@Tipo)))+ ''''
+
+
+SET @strSQL = @strSQL + ' Order By TT.PROJ_ID, TT.TASK_ID '
+
+
+EXECUTE (@strSQL)
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+
+CREATE PROCEDURE SP_LISTAR_SUMARIAS 
+(
+@Usuario   VARCHAR(10) = Null,
+@Tipo        VARCHAR(1) = Null
+)
+AS
+
+IF @Usuario IS NOT NULL
+BEGIN
+	SELECT TK.TASK_OUTLINE_NUM, 
+		TK.TASK_NAME, 
+		TK.TASK_OUTLINE_LEVEL, 
+		TK.TASK_BASE_START, 
+		TK.TASK_BASE_FINISH, 
+		TK.TASK_START_DATE, 
+		TK.TASK_FINISH_DATE, 
+		TK.TASK_PCT_COMP, 
+		TK.TASK_IS_SUMMARY, 
+		TK.TASK_IS_EXTERNAL, 
+		TK.PROJ_ID, 
+		PJ.PROJ_NAME, 
+		TK.TASK_UID, 
+		TK.TASK_ID, 
+		TK.TASK_DUR, 
+		UPPER(DC.TEXT_VALUE) as CLI, 
+		Null as Frente, 
+		Null as Equipe, 
+		Null as Governanca, 
+		Null as RespInt, 
+		Null as  Area,
+		Null as  Unidade 
+	FROM MSP_PROJECTS PJ, MSP_TASKS TK left outer join DadosCLI DC on 
+		TK.PROJ_ID = DC.PROJ_ID and TK.TASK_UID = DC.TEXT_REF_UID 
+	WHERE PJ.PROJ_ID = TK.PROJ_ID 
+ 		And (TK.TASK_ID IS NOT NULL)  
+		And (TK.TASK_ID <> 0) 
+		And (TK.TASK_IS_SUMMARY = 1) 
+		And (TK.PROJ_ID in (Select Distinct PROJ_ID from TabelaTemp Where UPPER(RTRIM(LTRIM(Usuario))) = UPPER(RTRIM(LTRIM(@Usuario))) And UPPER(RTRIM(LTRIM(Tipo))) = UPPER(RTRIM(LTRIM(@Tipo)))))
+	Order By TK.PROJ_ID, TK.TASK_OUTLINE_NUM
+
+END
+ELSE
+BEGIN
+
+	SELECT TK.TASK_OUTLINE_NUM, 
+		TK.TASK_NAME, 
+		TK.TASK_OUTLINE_LEVEL, 
+		TK.TASK_BASE_START, 
+		TK.TASK_BASE_FINISH, 
+		TK.TASK_START_DATE, 
+		TK.TASK_FINISH_DATE, 
+		TK.TASK_PCT_COMP, 
+		TK.TASK_IS_SUMMARY, 
+		TK.TASK_IS_EXTERNAL, 
+		TK.PROJ_ID, 
+		PJ.PROJ_NAME, 
+		TK.TASK_UID, 
+		TK.TASK_ID, 
+		TK.TASK_DUR, 
+		UPPER(DC.TEXT_VALUE) as CLI, 
+		Null as Frente, 
+		Null as Equipe, 
+		Null as Governanca, 
+		Null as RespInt, 
+		Null as  Area,
+		Null as  Unidade 
+	FROM MSP_PROJECTS PJ, MSP_TASKS TK left outer join DadosCLI DC on 
+		TK.PROJ_ID = DC.PROJ_ID and TK.TASK_UID = DC.TEXT_REF_UID 
+	WHERE PJ.PROJ_ID = TK.PROJ_ID 
+ 		And (TK.TASK_ID IS NOT NULL)  
+		And (TK.TASK_ID <> 0) 
+		And (TK.TASK_IS_SUMMARY = 1) 
+	Order By TK.PROJ_ID, TK.TASK_OUTLINE_NUM
+
+END
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+CREATE PROCEDURE SP_LISTAR_TB_TEMP 
+(
+@Usuario Varchar (255),
+@Tipo Varchar(1)
+)
+AS
+Select * 
+from TabelaTemp
+Where Upper(RTrim(LTrim(Usuario))) = Upper(RTrim(LTrim(@Usuario))) AND  Upper(RTrim(LTrim(Tipo))) = @Tipo
+Order By PROJ_ID, TASK_OUTLINE_NUM
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+CREATE PROCEDURE SP_LISTAR_USUARIO 
+@Login varchar(10) = NULL
+AS
+
+
+IF @Login IS NULL
+BEGIN
+	SELECT * FROM Usuarios
+	ORDER BY Nome_Usuario
+END
+ELSE
+BEGIN
+	SELECT * FROM Usuarios
+	WHERE Login = LTrim(RTrim(@Login))
+END
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

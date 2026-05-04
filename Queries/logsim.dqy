@@ -1,0 +1,7 @@
+XLODBC
+1
+DSN=ss;Description=ss;UID=pmo_light;APP=Microsoft Office 2003;WSID=LIGHT-TATA061;DATABASE=PMO;Network=DBMSSOCN;Address=sssmr01,3971
+SELECT DISTINCT dadoslog2.Cod_Usuario, convert(varchar(10),dadoslog2.Data_Atualizacao,103)  FROM PMO.dbo.dadoslog2 dadoslog2  ORDER BY 2
+
+
+Cod_Usuario	convert(varchar(10),dadoslog2.Data_Atualizacao,103)
