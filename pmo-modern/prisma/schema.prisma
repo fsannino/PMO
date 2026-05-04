@@ -1,17 +1,136 @@
-// PMO CollabZ — modelo de domínio moderno
+// PMO CollabZ — modelo de domínio moderno (PostgreSQL).
 // Inspirado nos scripts SQL legados em /Scripts/Script_SMR.txt e Script_SMR_Light.txt
 // e nas telas ASP de SMR/ e SMR_Light/ + forms VB6 em Manutencao_SMR/.
 //
-// SQLite em dev (sem suporte a enums) → enums viram String + validação Zod
-// em src/lib/enums.ts. Em produção com PostgreSQL, reintroduzir enums nativos.
+// Para dev local: docker compose up -d db (Postgres em :5432).
+// Para produção: Supabase (DATABASE_URL no .env).
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ENUMS
+// ═══════════════════════════════════════════════════════════════════════════
+
+enum Role {
+  ADMIN
+  MANAGER
+  MEMBER
+  VIEWER
+}
+
+enum Module {
+  CUT
+  GVI
+  GRF
+  TCP
+  TIN
+  PMO
+  LIGHT
+}
+
+enum ProjectStatus {
+  ACTIVE
+  PAUSED
+  CLOSED
+  ARCHIVED
+}
+
+enum TaskStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  DELAYED
+  DONE
+  CANCELLED
+}
+
+enum DependencyType {
+  FS
+  SS
+  FF
+  SF
+}
+
+enum HistoryAction {
+  CREATED
+  UPDATED
+  DELETED
+  RESTORED
+  IMPORTED
+  MEASURED
+}
+
+enum Severity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum IssueStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum RiskStatus {
+  IDENTIFIED
+  ANALYZING
+  MITIGATING
+  ACCEPTED
+  CLOSED
+}
+
+enum ActionStatus {
+  OPEN
+  IN_PROGRESS
+  DONE
+  CANCELLED
+}
+
+enum ChangeRequestStatus {
+  OPEN
+  UNDER_REVIEW
+  APPROVED
+  IN_IMPLEMENTATION
+  IMPLEMENTED
+  REJECTED
+  CANCELLED
+}
+
+enum ImportSource {
+  EXCEL
+  MSPROJECT_XML
+  MANUAL
+}
+
+enum ImportTemplate {
+  IS
+  RK
+  AC
+  CR
+  TK
+  TC
+}
+
+enum ImportMode {
+  REPLACE
+  MERGE
+  ONLY_NEW
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -23,7 +142,7 @@ model User {
   email        String   @unique
   name         String
   passwordHash String
-  role         String   @default("MEMBER") // Role: ADMIN/MANAGER/MEMBER/VIEWER
+  role         Role     @default(MEMBER)
   unidadeId    String?
   unidade      Unidade? @relation(fields: [unidadeId], references: [id])
   areaId       String?
@@ -125,24 +244,24 @@ model Equipe {
 // ═══════════════════════════════════════════════════════════════════════════
 
 model Project {
-  id            String      @id @default(cuid())
-  code          String      @unique
+  id            String        @id @default(cuid())
+  code          String        @unique
   name          String
   description   String?
-  module        String      @default("PMO") // Module: CUT/GVI/GRF/TCP/TIN/PMO/LIGHT
-  status        String      @default("ACTIVE") // ProjectStatus
-  priority      Int         @default(0)
+  module        Module        @default(PMO)
+  status        ProjectStatus @default(ACTIVE)
+  priority      Int           @default(0)
   unidadeId     String?
-  unidade       Unidade?    @relation(fields: [unidadeId], references: [id])
+  unidade       Unidade?      @relation(fields: [unidadeId], references: [id])
   governancaId  String?
-  governanca    Governanca? @relation(fields: [governancaId], references: [id])
+  governanca    Governanca?   @relation(fields: [governancaId], references: [id])
   startDate     DateTime
   endDate       DateTime
   baselineDate  DateTime?
   ownerId       String
-  owner         User        @relation("ProjectOwner", fields: [ownerId], references: [id])
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  owner         User          @relation("ProjectOwner", fields: [ownerId], references: [id])
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
   members           Membership[]
   accesses          Access[]
@@ -161,7 +280,7 @@ model Membership {
   id        String  @id @default(cuid())
   userId    String
   projectId String
-  role      String  @default("MEMBER")
+  role      Role    @default(MEMBER)
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
@@ -172,7 +291,7 @@ model Access {
   id        String   @id @default(cuid())
   userId    String
   projectId String
-  module    String   // Module
+  module    Module
   canRead   Boolean  @default(true)
   canWrite  Boolean  @default(false)
   canAdmin  Boolean  @default(false)
@@ -189,9 +308,9 @@ model Access {
 // ═══════════════════════════════════════════════════════════════════════════
 
 model Task {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   projectId     String
-  project       Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project       Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
   externalId    String?
   wbs           String?
   name          String
@@ -201,24 +320,24 @@ model Task {
   baselineStart DateTime?
   baselineEnd   DateTime?
   durationDays  Int?
-  percentDone   Float     @default(0)
-  status        String    @default("NOT_STARTED") // TaskStatus
-  isMilestone   Boolean   @default(false)
-  isSummary     Boolean   @default(false)
+  percentDone   Float      @default(0)
+  status        TaskStatus @default(NOT_STARTED)
+  isMilestone   Boolean    @default(false)
+  isSummary     Boolean    @default(false)
   parentId      String?
-  parent        Task?     @relation("TaskHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
-  children      Task[]    @relation("TaskHierarchy")
+  parent        Task?      @relation("TaskHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children      Task[]     @relation("TaskHierarchy")
   assigneeId    String?
-  assignee      User?     @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  assignee      User?      @relation("TaskAssignee", fields: [assigneeId], references: [id])
   areaId        String?
-  area          Area?     @relation(fields: [areaId], references: [id])
+  area          Area?      @relation(fields: [areaId], references: [id])
   frenteId      String?
-  frente        Frente?   @relation(fields: [frenteId], references: [id])
+  frente        Frente?    @relation(fields: [frenteId], references: [id])
   equipeId      String?
-  equipe        Equipe?   @relation(fields: [equipeId], references: [id])
+  equipe        Equipe?    @relation(fields: [equipeId], references: [id])
   deletedAt     DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
 
   predecessors     TaskDependency[]  @relation("Successor")
   successors       TaskDependency[]  @relation("Predecessor")
@@ -235,11 +354,11 @@ model Task {
 }
 
 model TaskDependency {
-  id            String @id @default(cuid())
+  id            String         @id @default(cuid())
   predecessorId String
   successorId   String
-  type          String @default("FS") // DependencyType: FS/SS/FF/SF
-  lagDays       Int    @default(0)
+  type          DependencyType @default(FS)
+  lagDays       Int            @default(0)
 
   predecessor Task @relation("Predecessor", fields: [predecessorId], references: [id], onDelete: Cascade)
   successor   Task @relation("Successor",   fields: [successorId],   references: [id], onDelete: Cascade)
@@ -248,17 +367,17 @@ model TaskDependency {
 }
 
 model TaskHistory {
-  id        String   @id @default(cuid())
+  id        String        @id @default(cuid())
   taskId    String
-  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  task      Task          @relation(fields: [taskId], references: [id], onDelete: Cascade)
   userId    String?
-  user      User?    @relation(fields: [userId], references: [id])
-  action    String   // HistoryAction: CREATED/UPDATED/DELETED/RESTORED/IMPORTED/MEASURED
+  user      User?         @relation(fields: [userId], references: [id])
+  action    HistoryAction
   field     String?
   oldValue  String?
   newValue  String?
   note      String?
-  createdAt DateTime @default(now())
+  createdAt DateTime      @default(now())
 
   @@index([taskId])
 }
@@ -316,72 +435,72 @@ model ConfigFechamento {
 // ═══════════════════════════════════════════════════════════════════════════
 
 model Issue {
-  id          String    @id @default(cuid())
+  id          String      @id @default(cuid())
   projectId   String
-  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project     Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
   taskId      String?
-  task        Task?     @relation("IssueTask", fields: [taskId], references: [id], onDelete: SetNull)
+  task        Task?       @relation("IssueTask", fields: [taskId], references: [id], onDelete: SetNull)
   ownerId     String?
-  owner       User?     @relation("IssueOwner", fields: [ownerId], references: [id])
+  owner       User?       @relation("IssueOwner", fields: [ownerId], references: [id])
   areaId      String?
-  area        Area?     @relation(fields: [areaId], references: [id])
+  area        Area?       @relation(fields: [areaId], references: [id])
   externalId  String?
   title       String
   description String?
-  severity    String    @default("MEDIUM") // Severity
-  priority    String    @default("MEDIUM") // Priority
-  status      String    @default("OPEN")   // IssueStatus
+  severity    Severity    @default(MEDIUM)
+  priority    Priority    @default(MEDIUM)
+  status      IssueStatus @default(OPEN)
   workflow    String?
-  openedAt    DateTime  @default(now())
+  openedAt    DateTime    @default(now())
   closedAt    DateTime?
   deletedAt   DateTime?
   comments    Comment[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 
   @@index([projectId])
   @@index([status])
 }
 
 model Risk {
-  id          String    @id @default(cuid())
+  id          String     @id @default(cuid())
   projectId   String
-  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project     Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
   ownerId     String?
-  owner       User?     @relation("RiskOwner", fields: [ownerId], references: [id])
+  owner       User?      @relation("RiskOwner", fields: [ownerId], references: [id])
   externalId  String?
   title       String
   description String?
-  probability Float     @default(0.5)
-  impact      Float     @default(0.5)
-  exposure    Float     @default(0.25)
+  probability Float      @default(0.5)
+  impact      Float      @default(0.5)
+  exposure    Float      @default(0.25)
   mitigation  String?
-  status      String    @default("IDENTIFIED") // RiskStatus
+  status      RiskStatus @default(IDENTIFIED)
   deletedAt   DateTime?
   comments    Comment[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
   @@index([projectId])
   @@index([status])
 }
 
 model Action {
-  id          String    @id @default(cuid())
+  id          String       @id @default(cuid())
   projectId   String
-  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project     Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
   ownerId     String?
-  owner       User?     @relation("ActionOwner", fields: [ownerId], references: [id])
+  owner       User?        @relation("ActionOwner", fields: [ownerId], references: [id])
   externalId  String?
   title       String
   description String?
   dueDate     DateTime?
-  status      String    @default("OPEN")    // ActionStatus
-  priority    String    @default("MEDIUM")  // Priority
+  status      ActionStatus @default(OPEN)
+  priority    Priority     @default(MEDIUM)
   comments    Comment[]
   deletedAt   DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   @@index([projectId])
 }
@@ -397,8 +516,8 @@ model ChangeRequest {
   externalId  String?
   name        String
   description String?
-  priority    String                    @default("MEDIUM") // Priority
-  status      String                    @default("OPEN")   // ChangeRequestStatus
+  priority    Priority                  @default(MEDIUM)
+  status      ChangeRequestStatus       @default(OPEN)
   dueDate     DateTime?
   comments    Comment[]
   increments  ChangeRequestIncrement[]
@@ -500,18 +619,18 @@ model Document {
 // ═══════════════════════════════════════════════════════════════════════════
 
 model ImportLog {
-  id          String   @id @default(cuid())
+  id          String          @id @default(cuid())
   projectId   String
-  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project     Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
   userId      String?
-  user        User?    @relation("ImportUser", fields: [userId], references: [id])
-  source      String   // ImportSource: EXCEL/MSPROJECT_XML/MANUAL
-  template    String?  // ImportTemplate: IS/RK/AC/CR/TK/TC
+  user        User?           @relation("ImportUser", fields: [userId], references: [id])
+  source      ImportSource
+  template    ImportTemplate?
   filename    String
   recordCount Int
   warnings    String?
-  mode        String   @default("MERGE") // ImportMode: REPLACE/MERGE/ONLY_NEW
-  createdAt   DateTime @default(now())
+  mode        ImportMode      @default(MERGE)
+  createdAt   DateTime        @default(now())
 
   @@index([projectId])
 }

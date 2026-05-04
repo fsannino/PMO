@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Module } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -470,7 +470,7 @@ async function main() {
 
   // ─── Projetos exemplo para outros módulos (Sessão 10) ───────────────
   console.log("🧩 Criando projetos exemplo de outros módulos…");
-  const moduleSeed: Array<{ code: string; name: string; module: string; offset: number; duration: number }> = [
+  const moduleSeed: Array<{ code: string; name: string; module: Module; offset: number; duration: number }> = [
     { code: "CUT-2026",   name: "CutOver — Migração SAP",        module: "CUT",   offset: 100, duration: 30 },
     { code: "GVI-2026",   name: "Governança Integrada (saneamento)", module: "GVI", offset: 0, duration: 365 },
     { code: "TCP-2026",   name: "Teste de Carga — Plataforma",   module: "TCP",   offset: 60,  duration: 45 },
