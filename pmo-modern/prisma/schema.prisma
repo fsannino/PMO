@@ -1,0 +1,253 @@
+// PMO Sinergia — modelo de domínio moderno
+// Inspirado nos scripts SQL legados em /Scripts/Script_SMR.txt e Script_SMR_Light.txt
+// e nas telas ASP de SMR/ e SMR_Light/.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Identidade / RBAC ────────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String
+  passwordHash  String
+  role          Role      @default(MEMBER)
+  unidade       String?   // legado: SMR, CUT, GVI, GRF, Light, etc.
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  ownedProjects Project[]      @relation("ProjectOwner")
+  memberships   Membership[]
+  measurements  Measurement[]
+  comments      Comment[]
+  issues        Issue[]        @relation("IssueOwner")
+  risks         Risk[]         @relation("RiskOwner")
+  assignedTasks Task[]         @relation("TaskAssignee")
+}
+
+enum Role {
+  ADMIN     // mantém o sistema, gerencia usuários
+  MANAGER   // gerencia projetos
+  MEMBER    // executa e mede tarefas
+  VIEWER    // somente leitura
+}
+
+// ─── Projeto ──────────────────────────────────────────────────────────────
+
+model Project {
+  id          String   @id @default(cuid())
+  code        String   @unique          // ex.: SMR, CUT, LIGHT-2024
+  name        String
+  description String?
+  status      ProjectStatus @default(ACTIVE)
+  unidade     String?
+  startDate   DateTime
+  endDate     DateTime
+  baseline    DateTime?                  // baseline de cronograma
+  ownerId     String
+  owner       User     @relation("ProjectOwner", fields: [ownerId], references: [id])
+  members     Membership[]
+  tasks       Task[]
+  issues      Issue[]
+  risks       Risk[]
+  imports     ImportLog[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum ProjectStatus {
+  ACTIVE
+  PAUSED
+  CLOSED
+  ARCHIVED
+}
+
+model Membership {
+  id        String  @id @default(cuid())
+  userId    String
+  projectId String
+  role      Role    @default(MEMBER)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, projectId])
+}
+
+// ─── Cronograma (Tarefas + Predecessores) ─────────────────────────────────
+
+model Task {
+  id           String    @id @default(cuid())
+  projectId    String
+  project      Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  externalId   String?   // ID do MS Project / Excel original
+  wbs          String?   // estrutura analítica (1.2.3)
+  name         String
+  description  String?
+  startDate    DateTime
+  endDate      DateTime
+  baselineStart DateTime?
+  baselineEnd   DateTime?
+  durationDays Int?
+  percentDone  Float     @default(0)     // 0..100
+  status       TaskStatus @default(NOT_STARTED)
+  isMilestone  Boolean   @default(false)
+  isSummary    Boolean   @default(false)
+  parentId     String?
+  parent       Task?     @relation("TaskHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children     Task[]    @relation("TaskHierarchy")
+  assigneeId   String?
+  assignee     User?     @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  predecessors  TaskDependency[] @relation("Successor")
+  successors    TaskDependency[] @relation("Predecessor")
+  measurements  Measurement[]
+  comments      Comment[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([projectId])
+  @@index([assigneeId])
+}
+
+enum TaskStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  DELAYED
+  DONE
+  CANCELLED
+}
+
+model TaskDependency {
+  id            String @id @default(cuid())
+  predecessorId String
+  successorId   String
+  type          DependencyType @default(FS)   // FS, SS, FF, SF
+  lagDays       Int @default(0)
+
+  predecessor Task @relation("Predecessor", fields: [predecessorId], references: [id], onDelete: Cascade)
+  successor   Task @relation("Successor",   fields: [successorId],   references: [id], onDelete: Cascade)
+
+  @@unique([predecessorId, successorId])
+}
+
+enum DependencyType {
+  FS  // Finish-to-Start
+  SS  // Start-to-Start
+  FF  // Finish-to-Finish
+  SF  // Start-to-Finish
+}
+
+// ─── Medição (legado: Medicao_Detalhe) ────────────────────────────────────
+
+model Measurement {
+  id         String   @id @default(cuid())
+  taskId     String
+  task       Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  date       DateTime @default(now())
+  percentDone Float
+  hoursWorked Float?
+  comment    String?
+  confirmed  Boolean  @default(false)
+  confirmedAt DateTime?
+
+  @@index([taskId])
+}
+
+// ─── Issues e Risks (legado: GVI/PMO Issues / Risks) ──────────────────────
+
+model Issue {
+  id          String   @id @default(cuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  ownerId     String?
+  owner       User?    @relation("IssueOwner", fields: [ownerId], references: [id])
+  title       String
+  description String?
+  severity    Severity @default(MEDIUM)
+  status      IssueStatus @default(OPEN)
+  openedAt    DateTime @default(now())
+  closedAt    DateTime?
+  comments    Comment[]
+}
+
+enum Severity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum IssueStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+model Risk {
+  id          String   @id @default(cuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  ownerId     String?
+  owner       User?    @relation("RiskOwner", fields: [ownerId], references: [id])
+  title       String
+  description String?
+  probability Float    @default(0.5)  // 0..1
+  impact      Float    @default(0.5)  // 0..1
+  exposure    Float    @default(0.25) // probability * impact (calculado)
+  mitigation  String?
+  status      RiskStatus @default(IDENTIFIED)
+  comments    Comment[]
+}
+
+enum RiskStatus {
+  IDENTIFIED
+  ANALYZING
+  MITIGATING
+  ACCEPTED
+  CLOSED
+}
+
+// ─── Comentários polimórficos ─────────────────────────────────────────────
+
+model Comment {
+  id        String   @id @default(cuid())
+  body      String
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  taskId    String?
+  task      Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  issueId   String?
+  issue     Issue?   @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  riskId    String?
+  risk      Risk?    @relation(fields: [riskId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+// ─── Auditoria de importações ─────────────────────────────────────────────
+
+model ImportLog {
+  id          String   @id @default(cuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  source      ImportSource
+  filename    String
+  taskCount   Int
+  warnings    String?
+  createdAt   DateTime @default(now())
+}
+
+enum ImportSource {
+  EXCEL
+  MSPROJECT_XML
+  MANUAL
+}

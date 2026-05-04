@@ -1,0 +1,45 @@
+# Legacy build artifacts
+*.exe
+*.dll
+*.lib
+*.exp
+*.pdb
+*.obj
+*.OLD
+
+# Visual SourceSafe / FrontPage remnants
+vssver.scc
+_vti_cnf/
+_vti_pvt/
+
+# Logs
+*.log
+Log.txt
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Node / Next.js (pmo-modern)
+node_modules/
+.next/
+out/
+dist/
+build/
+coverage/
+.turbo/
+
+# Env / secrets
+.env
+.env.local
+.env.*.local
+*.udl.local
+
+# Prisma
+pmo-modern/prisma/*.db
+pmo-modern/prisma/*.db-journal
