@@ -3,6 +3,8 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { FolderKanban, AlertTriangle, Bug, GitPullRequestArrow } from "lucide-react";
+import { projectScorecard } from "@/lib/scorecard";
+import { cn } from "@/lib/utils";
 
 export const metadata = { title: "Dashboard — PMO CollabZ" };
 
@@ -63,6 +65,7 @@ export default async function DashboardPage() {
     session.user.id,
     session.user.role === "ADMIN",
   );
+  const scorecards = await Promise.all(projects.map((p) => projectScorecard(p.id)));
 
   const stats = [
     { label: "Projetos", value: projects.length, icon: FolderKanban, href: "/projects", tone: "bg-brand-50 text-brand-700" },
@@ -122,12 +125,17 @@ export default async function DashboardPage() {
                   <th className="px-4 py-2 text-left">Unidade</th>
                   <th className="px-4 py-2 text-left">Owner</th>
                   <th className="px-4 py-2 text-right">Tarefas</th>
+                  <th className="px-4 py-2 text-left">Andamento</th>
+                  <th className="px-4 py-2 text-right">Atrasadas</th>
                   <th className="px-4 py-2 text-right">Issues</th>
                   <th className="px-4 py-2 text-right">Riscos</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {projects.map((p) => (
+                {projects.map((p, i) => {
+                  const sc = scorecards[i];
+                  const late = sc.delayed0to10 + sc.delayedMore10;
+                  return (
                   <tr key={p.id} className="hover:bg-slate-50">
                     <td className="px-4 py-2">
                       <Link href={`/projects/${p.id}`} className="font-medium text-brand-700 hover:underline">
@@ -142,11 +150,23 @@ export default async function DashboardPage() {
                     </td>
                     <td className="px-4 py-2 text-slate-600">{p.unidade?.code ?? "—"}</td>
                     <td className="px-4 py-2 text-slate-600">{p.owner.name}</td>
-                    <td className="px-4 py-2 text-right">{p._count.tasks}</td>
-                    <td className="px-4 py-2 text-right">{p._count.issues}</td>
-                    <td className="px-4 py-2 text-right">{p._count.risks}</td>
+                    <td className="px-4 py-2 text-right tabular-nums">{p._count.tasks}</td>
+                    <td className="px-4 py-2">
+                      <div className="flex items-center gap-2">
+                        <div className="h-1.5 w-20 overflow-hidden rounded-full bg-slate-100">
+                          <div className="h-full bg-brand-500" style={{ width: `${sc.andamentoPct}%` }} />
+                        </div>
+                        <span className="text-xs tabular-nums text-slate-600">{sc.andamentoPct}%</span>
+                      </div>
+                    </td>
+                    <td className={cn("px-4 py-2 text-right tabular-nums", late > 0 ? "text-rose-700" : "text-slate-400")}>
+                      {late}
+                    </td>
+                    <td className="px-4 py-2 text-right tabular-nums">{p._count.issues}</td>
+                    <td className="px-4 py-2 text-right tabular-nums">{p._count.risks}</td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>

@@ -1,29 +1,34 @@
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { ScorecardCard } from "@/components/ScorecardCard";
+import { projectScorecard } from "@/lib/scorecard";
 
 export default async function ProjectDetailPage({
   params,
 }: {
   params: { id: string };
 }) {
-  const project = await prisma.project.findUnique({
-    where: { id: params.id },
-    include: {
-      unidade: true,
-      governanca: true,
-      owner: { select: { name: true, email: true } },
-      _count: {
-        select: {
-          tasks: true,
-          issues: true,
-          risks: true,
-          actions: true,
-          changeRequests: true,
+  const [project, scorecard] = await Promise.all([
+    prisma.project.findUnique({
+      where: { id: params.id },
+      include: {
+        unidade: true,
+        governanca: true,
+        owner: { select: { name: true, email: true } },
+        _count: {
+          select: {
+            tasks: true,
+            issues: true,
+            risks: true,
+            actions: true,
+            changeRequests: true,
+          },
         },
       },
-    },
-  });
+    }),
+    projectScorecard(params.id),
+  ]);
   if (!project) notFound();
 
   return (
@@ -41,6 +46,9 @@ export default async function ProjectDetailPage({
         <Stat label="Riscos" value={project._count.risks} />
         <Stat label="Change Requests" value={project._count.changeRequests} />
       </section>
+
+      <ScorecardCard title="Scorecard" subtitle="KPIs do cronograma (computado em tempo real)" data={scorecard} />
+
 
       <section className="grid gap-4 md:grid-cols-2">
         <div className="rounded-lg border bg-white p-4">
