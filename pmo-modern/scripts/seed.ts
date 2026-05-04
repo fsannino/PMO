@@ -138,7 +138,7 @@ async function main() {
   const project = await prisma.project.create({
     data: {
       code: "SMR-2026",
-      name: "Sinergia Manutenção e Refino 2026",
+      name: "CollabZ Manutenção e Refino 2026",
       description: "Projeto SMR de modernização das rotinas de PCM e parada programada.",
       module: "PMO",
       status: "ACTIVE",

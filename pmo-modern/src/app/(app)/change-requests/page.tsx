@@ -1,6 +1,6 @@
 import { ComingSoon } from "@/components/ComingSoon";
 
-export const metadata = { title: "Change Requests — PMO Sinergia" };
+export const metadata = { title: "Change Requests — PMO CollabZ" };
 
 export default function CRsPage() {
   return (

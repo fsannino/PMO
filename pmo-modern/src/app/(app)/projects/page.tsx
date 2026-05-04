@@ -3,7 +3,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 
-export const metadata = { title: "Projetos — PMO Sinergia" };
+export const metadata = { title: "Projetos — PMO CollabZ" };
 
 export default async function ProjectsPage() {
   const session = await getServerSession(authOptions);

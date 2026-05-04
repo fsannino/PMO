@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export const metadata = { title: "Acesso negado — PMO Sinergia" };
+export const metadata = { title: "Acesso negado — PMO CollabZ" };
 
 export default function ForbiddenPage() {
   return (

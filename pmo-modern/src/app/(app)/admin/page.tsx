@@ -15,7 +15,7 @@ import {
   Briefcase,
 } from "lucide-react";
 
-export const metadata = { title: "Administração — PMO Sinergia" };
+export const metadata = { title: "Administração — PMO CollabZ" };
 
 export default async function AdminPage() {
   const session = await getServerSession(authOptions);

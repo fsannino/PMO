@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
-export const metadata = { title: "Entrar — PMO Sinergia" };
+export const metadata = { title: "Entrar — PMO CollabZ" };
 
 export default async function LoginPage() {
   const session = await getServerSession(authOptions);
@@ -14,7 +14,7 @@ export default async function LoginPage() {
     <div className="grid min-h-screen place-items-center bg-slate-100 p-4">
       <div className="w-full max-w-sm rounded-lg border bg-white p-6 shadow">
         <div className="mb-6 text-center">
-          <h1 className="text-xl font-semibold text-brand-700">PMO Sinergia</h1>
+          <h1 className="text-xl font-semibold text-brand-700">PMO CollabZ</h1>
           <p className="text-sm text-slate-500">Acesso ao sistema</p>
         </div>
         <Suspense fallback={null}>

@@ -1,6 +1,6 @@
 import { ComingSoon } from "@/components/ComingSoon";
 
-export const metadata = { title: "Issues — PMO Sinergia" };
+export const metadata = { title: "Issues — PMO CollabZ" };
 
 export default function IssuesPage() {
   return (

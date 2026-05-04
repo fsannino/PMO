@@ -1,4 +1,4 @@
-# Plano de Modernização — PMO Sinergia
+# Plano de Modernização — PMO CollabZ
 
 > Plano vivo. Cada sessão tem escopo fechado, prompt pronto para colar em uma nova
 > conversa do Claude Code, e critérios de aceitação ("DoD") objetivos.
