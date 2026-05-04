@@ -43,3 +43,5 @@ coverage/
 # Prisma
 pmo-modern/prisma/*.db
 pmo-modern/prisma/*.db-journal
+pmo-modern/prisma/*.db-shm
+pmo-modern/prisma/*.db-wal
