@@ -9,11 +9,12 @@ import { getMeasurementWindow, periodOf } from "@/lib/closing-window";
 
 export const metadata = { title: "Medição — CollabZ" };
 
-export default async function MeasurementPage({ params }: { params: { id: string } }) {
+export default async function MeasurementPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const session = await getServerSession(authOptions);
   if (!session?.user) return null;
   const project = await prisma.project.findUnique({
-    where: { id: params.id },
+    where: { id },
     select: { id: true, module: true },
   });
   if (!project) notFound();
@@ -25,7 +26,6 @@ export default async function MeasurementPage({ params }: { params: { id: string
   const period = periodOf();
   const win = await getMeasurementWindow(project.id);
 
-  // tarefas atribuídas ao usuário OU sem atribuição (open) que não estejam excluídas/sumarizadas
   const tasks = await prisma.task.findMany({
     where: {
       projectId: project.id,

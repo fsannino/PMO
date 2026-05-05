@@ -4,8 +4,9 @@ import { ReportsGallery } from "@/components/reports/ReportsGallery";
 
 export const metadata = { title: "Relatórios — CollabZ" };
 
-export default async function ProjectReportsPage({ params }: { params: { id: string } }) {
-  const project = await prisma.project.findUnique({ where: { id: params.id }, select: { id: true } });
+export default async function ProjectReportsPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const project = await prisma.project.findUnique({ where: { id }, select: { id: true } });
   if (!project) notFound();
   return (
     <div className="space-y-4">

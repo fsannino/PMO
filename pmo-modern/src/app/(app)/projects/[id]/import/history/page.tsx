@@ -17,8 +17,9 @@ const MODE_LABEL: Record<string, string> = {
   ONLY_NEW: "Apenas novos",
 };
 
-export default async function ImportHistoryPage({ params }: { params: { id: string } }) {
-  const project = await prisma.project.findUnique({ where: { id: params.id }, select: { id: true } });
+export default async function ImportHistoryPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const project = await prisma.project.findUnique({ where: { id }, select: { id: true } });
   if (!project) notFound();
 
   const logs = await prisma.importLog.findMany({

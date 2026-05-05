@@ -8,10 +8,11 @@ import { RisksList, type RiskRow } from "@/components/work-items/RisksList";
 
 export const metadata = { title: "Riscos — CollabZ" };
 
-export default async function ProjectRisksPage({ params }: { params: { id: string } }) {
+export default async function ProjectRisksPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const session = await getServerSession(authOptions);
   if (!session?.user) return null;
-  const project = await prisma.project.findUnique({ where: { id: params.id }, select: { id: true, module: true } });
+  const project = await prisma.project.findUnique({ where: { id }, select: { id: true, module: true } });
   if (!project) notFound();
   const moduleParsed = ModuleSchema.safeParse(project.module);
   if (!moduleParsed.success) redirect("/forbidden");

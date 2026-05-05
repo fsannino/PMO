@@ -5,9 +5,10 @@ import { buildTree, flattenTree } from "@/lib/task-tree";
 
 export const metadata = { title: "Gantt — CollabZ" };
 
-export default async function GanttPage({ params }: { params: { id: string } }) {
+export default async function GanttPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const project = await prisma.project.findUnique({
-    where: { id: params.id },
+    where: { id },
     select: { id: true },
   });
   if (!project) notFound();
