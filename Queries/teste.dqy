@@ -1,7 +1,0 @@
-XLODBC
-1
-DSN=ss;UID=pmo_light;APP=Microsoft® Query;WSID=PMODBSQL;DATABASE=PMO
-SELECT Usuarios.Login, Usuarios.Senha  FROM PMO.dbo.Usuarios Usuarios  ORDER BY Usuarios.Login
-
-
-Login	Senha
