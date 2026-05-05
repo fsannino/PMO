@@ -214,8 +214,8 @@ async function importTasks(projectId: string, rows: RowTask[], mode: ImportMode,
       equipeId: r.equipeCode ? equipeByCode.get(r.equipeCode.toUpperCase()) ?? null : null,
       areaId: r.areaCode ? areaByCode.get(r.areaCode.toUpperCase()) ?? null : null,
       frenteId: r.frenteCode ? frenteByCode.get(r.frenteCode.toUpperCase()) ?? null : null,
-      status:
-        (r.percentDone ?? 0) >= 100 ? "DONE" : (r.percentDone ?? 0) > 0 ? "IN_PROGRESS" : "NOT_STARTED",
+      status: ((r.percentDone ?? 0) >= 100 ? "DONE" : (r.percentDone ?? 0) > 0 ? "IN_PROGRESS" : "NOT_STARTED") as
+        | "DONE" | "IN_PROGRESS" | "NOT_STARTED",
     };
 
     if (mode === "REPLACE") {

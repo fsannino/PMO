@@ -4,6 +4,9 @@ import { authOptions } from "@/lib/auth";
 import { ImportTemplateSchema } from "@/lib/enums";
 import { buildTemplateXlsx } from "@/lib/import-excel";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 export async function GET(_req: Request, { params }: { params: { kind: string } }) {
   const session = await getServerSession(authOptions);
   if (!session?.user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });

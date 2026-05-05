@@ -24,18 +24,23 @@ Repositório que contém **dois sistemas**:
 
 ## Começando com a versão moderna
 
+Banco de dados: **PostgreSQL** (via Docker localmente, **Supabase** em produção).
+
 ```bash
 cd pmo-modern
 cp .env.example .env
 npm install
-npm run db:push
-npm run db:seed
-npm run dev
+npm run docker:db        # sobe Postgres em :5432 (precisa Docker)
+npm run db:deploy        # aplica migrations
+npm run db:seed          # popula dados de exemplo
+npm run dev              # http://localhost:3000
 ```
 
 Abra <http://localhost:3000>. Login padrão criado pelo seed: `admin@pmo.local` / `admin123`.
 
-Mais detalhes em [`pmo-modern/README.md`](pmo-modern/README.md).
+Mais detalhes:
+- [`pmo-modern/PLAN.md`](pmo-modern/PLAN.md) — plano de modernização em sessões.
+- [`pmo-modern/OPERATIONS.md`](pmo-modern/OPERATIONS.md) — runbook de deploy, backup, migrations.
 
 ## Status do legado
 

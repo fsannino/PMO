@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Module } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -467,6 +467,64 @@ async function main() {
       priority: "HIGH",
     },
   });
+
+  // ─── Projetos exemplo para outros módulos (Sessão 10) ───────────────
+  console.log("🧩 Criando projetos exemplo de outros módulos…");
+  const moduleSeed: Array<{ code: string; name: string; module: Module; offset: number; duration: number }> = [
+    { code: "CUT-2026",   name: "CutOver — Migração SAP",        module: "CUT",   offset: 100, duration: 30 },
+    { code: "GVI-2026",   name: "Governança Integrada (saneamento)", module: "GVI", offset: 0, duration: 365 },
+    { code: "TCP-2026",   name: "Teste de Carga — Plataforma",   module: "TCP",   offset: 60,  duration: 45 },
+    { code: "TIN-2026",   name: "Teste Integrado — SAP × MES",   module: "TIN",   offset: 80,  duration: 60 },
+    { code: "GRF-2026",   name: "Acompanhamento Gráfico — KPIs", module: "GRF",   offset: 0,   duration: 365 },
+    { code: "LIGHT-2026", name: "Light — Acompanhamento simples", module: "LIGHT", offset: 0,  duration: 180 },
+  ];
+  for (const ms of moduleSeed) {
+    const ps = new Date(start.getTime() + days(ms.offset));
+    const pe = new Date(ps.getTime() + days(ms.duration));
+    const proj = await prisma.project.create({
+      data: {
+        code: ms.code,
+        name: ms.name,
+        description: `Projeto de demonstração do módulo ${ms.module}.`,
+        module: ms.module,
+        status: "ACTIVE",
+        priority: 5,
+        unidadeId: unREFAP.id,
+        startDate: ps,
+        endDate: pe,
+        baselineDate: ps,
+        ownerId: manager.id,
+      },
+    });
+    await prisma.access.createMany({
+      data: [
+        { userId: admin.id,   projectId: proj.id, module: ms.module, canRead: true, canWrite: true, canAdmin: true },
+        { userId: manager.id, projectId: proj.id, module: ms.module, canRead: true, canWrite: true, canAdmin: true },
+        { userId: mAlpha.id,  projectId: proj.id, module: ms.module, canRead: true, canWrite: true },
+      ],
+    });
+    // 3 tarefas exemplo cada
+    for (let i = 1; i <= 3; i++) {
+      const ts = new Date(ps.getTime() + days((ms.duration / 3) * (i - 1)));
+      const te = new Date(ts.getTime() + days(ms.duration / 3));
+      await prisma.task.create({
+        data: {
+          projectId: proj.id,
+          wbs: String(i),
+          name: `${ms.module} — atividade ${i}`,
+          startDate: ts,
+          endDate: te,
+          baselineStart: ts,
+          baselineEnd: te,
+          durationDays: Math.round(ms.duration / 3),
+          percentDone: i === 1 ? 100 : i === 2 ? 40 : 0,
+          status: i === 1 ? "DONE" : i === 2 ? "IN_PROGRESS" : "NOT_STARTED",
+          assigneeId: mAlpha.id,
+          equipeId: eqAlpha.id,
+        },
+      });
+    }
+  }
 
   console.log("✅ Seed concluído!");
   console.log("   Login admin: admin@pmo.local / admin123");

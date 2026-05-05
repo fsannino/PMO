@@ -8,16 +8,21 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "db:seed": "tsx scripts/seed.ts",
-    "db:reset": "prisma migrate reset --force"
+    "db:reset": "prisma migrate reset --force",
+    "docker:db": "docker compose up -d db",
+    "docker:up": "docker compose up --build"
   },
   "prisma": {
     "seed": "tsx scripts/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "@react-pdf/renderer": "^4.5.1",
     "bcryptjs": "^2.4.3",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",

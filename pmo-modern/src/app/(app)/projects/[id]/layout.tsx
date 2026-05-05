@@ -5,6 +5,8 @@ import { hasAccess } from "@/lib/access";
 import { ModuleSchema } from "@/lib/enums";
 import { notFound, redirect } from "next/navigation";
 import { ProjectTabs } from "@/components/ProjectTabs";
+import { ModuleBanner } from "@/components/ModuleBanner";
+import { getModuleConfig } from "@/lib/modules";
 
 export default async function ProjectLayout({
   children,
@@ -28,6 +30,8 @@ export default async function ProjectLayout({
   const ok = await hasAccess(session.user.id, project.id, moduleParsed.data, "read");
   if (!ok) redirect("/forbidden");
 
+  const moduleConfig = getModuleConfig(project.module);
+
   return (
     <div className="space-y-4">
       <header className="flex flex-wrap items-baseline justify-between gap-2">
@@ -35,11 +39,12 @@ export default async function ProjectLayout({
           <span className="font-mono text-xs text-slate-500">{project.code}</span>
           <h1 className="text-xl font-semibold">{project.name}</h1>
         </div>
-        <span className="rounded bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700">
-          {project.module}
+        <span className={`rounded px-2 py-0.5 text-xs font-medium ${moduleConfig.color}`}>
+          {moduleConfig.emoji} {moduleConfig.label}
         </span>
       </header>
-      <ProjectTabs projectId={project.id} />
+      <ModuleBanner module={project.module} />
+      <ProjectTabs projectId={project.id} hiddenLabels={moduleConfig.tabsHidden ?? []} />
       <div className="pt-2">{children}</div>
     </div>
   );

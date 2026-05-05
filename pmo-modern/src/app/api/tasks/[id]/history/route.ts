@@ -5,6 +5,9 @@ import { prisma } from "@/lib/db";
 import { hasAccess } from "@/lib/access";
 import { ModuleSchema } from "@/lib/enums";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 export async function GET(_req: Request, { params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
   if (!session?.user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });

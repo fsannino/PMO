@@ -4,9 +4,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-export function ProjectTabs({ projectId }: { projectId: string }) {
+export function ProjectTabs({
+  projectId,
+  hiddenLabels = [],
+}: {
+  projectId: string;
+  hiddenLabels?: string[];
+}) {
   const pathname = usePathname();
-  const tabs = [
+  const allTabs = [
     { href: `/projects/${projectId}`, label: "Detalhes", exact: true },
     { href: `/projects/${projectId}/tasks`, label: "Tarefas" },
     { href: `/projects/${projectId}/gantt`, label: "Gantt" },
@@ -16,8 +22,10 @@ export function ProjectTabs({ projectId }: { projectId: string }) {
     { href: `/projects/${projectId}/risks`, label: "Riscos" },
     { href: `/projects/${projectId}/actions`, label: "Actions" },
     { href: `/projects/${projectId}/change-requests`, label: "CRs" },
+    { href: `/projects/${projectId}/reports`, label: "Relatórios" },
     { href: `/projects/${projectId}/import`, label: "Importar" },
   ];
+  const tabs = allTabs.filter((t) => !hiddenLabels.includes(t.label));
   return (
     <nav className="border-b">
       <ul className="-mb-px flex gap-1">

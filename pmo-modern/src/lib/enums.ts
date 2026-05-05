@@ -1,74 +1,82 @@
-// Enums "lógicos" do domínio. Como SQLite não suporta enums no Prisma, mantemos
-// strings no banco e validamos no app via Zod / union types.
-//
-// Em produção (PostgreSQL), reintroduzir como enums Prisma nativos.
+// Re-exporta os enums nativos do Prisma + Zod schemas para validação no app.
+// (Em PostgreSQL temos enums nativos. As constantes []const ainda servem para
+// iterações em UI — selects, dropdowns.)
 
 import { z } from "zod";
+import {
+  Role as PrismaRole,
+  Module as PrismaModule,
+  ProjectStatus as PrismaProjectStatus,
+  TaskStatus as PrismaTaskStatus,
+  DependencyType as PrismaDependencyType,
+  HistoryAction as PrismaHistoryAction,
+  Severity as PrismaSeverity,
+  Priority as PrismaPriority,
+  IssueStatus as PrismaIssueStatus,
+  RiskStatus as PrismaRiskStatus,
+  ActionStatus as PrismaActionStatus,
+  ChangeRequestStatus as PrismaChangeRequestStatus,
+  ImportSource as PrismaImportSource,
+  ImportTemplate as PrismaImportTemplate,
+  ImportMode as PrismaImportMode,
+} from "@prisma/client";
 
-export const Roles = ["ADMIN", "MANAGER", "MEMBER", "VIEWER"] as const;
-export type Role = (typeof Roles)[number];
-export const RoleSchema = z.enum(Roles);
+export type Role = PrismaRole;
+export const Roles = Object.values(PrismaRole) as readonly Role[];
+export const RoleSchema = z.nativeEnum(PrismaRole);
 
-export const Modules = ["CUT", "GVI", "GRF", "TCP", "TIN", "PMO", "LIGHT"] as const;
-export type Module = (typeof Modules)[number];
-export const ModuleSchema = z.enum(Modules);
+export type Module = PrismaModule;
+export const Modules = Object.values(PrismaModule) as readonly Module[];
+export const ModuleSchema = z.nativeEnum(PrismaModule);
 
-export const ProjectStatuses = ["ACTIVE", "PAUSED", "CLOSED", "ARCHIVED"] as const;
-export type ProjectStatus = (typeof ProjectStatuses)[number];
-export const ProjectStatusSchema = z.enum(ProjectStatuses);
+export type ProjectStatus = PrismaProjectStatus;
+export const ProjectStatuses = Object.values(PrismaProjectStatus) as readonly ProjectStatus[];
+export const ProjectStatusSchema = z.nativeEnum(PrismaProjectStatus);
 
-export const TaskStatuses = ["NOT_STARTED", "IN_PROGRESS", "DELAYED", "DONE", "CANCELLED"] as const;
-export type TaskStatus = (typeof TaskStatuses)[number];
-export const TaskStatusSchema = z.enum(TaskStatuses);
+export type TaskStatus = PrismaTaskStatus;
+export const TaskStatuses = Object.values(PrismaTaskStatus) as readonly TaskStatus[];
+export const TaskStatusSchema = z.nativeEnum(PrismaTaskStatus);
 
-export const DependencyTypes = ["FS", "SS", "FF", "SF"] as const;
-export type DependencyType = (typeof DependencyTypes)[number];
-export const DependencyTypeSchema = z.enum(DependencyTypes);
+export type DependencyType = PrismaDependencyType;
+export const DependencyTypes = Object.values(PrismaDependencyType) as readonly DependencyType[];
+export const DependencyTypeSchema = z.nativeEnum(PrismaDependencyType);
 
-export const HistoryActions = ["CREATED", "UPDATED", "DELETED", "RESTORED", "IMPORTED", "MEASURED"] as const;
-export type HistoryAction = (typeof HistoryActions)[number];
-export const HistoryActionSchema = z.enum(HistoryActions);
+export type HistoryAction = PrismaHistoryAction;
+export const HistoryActions = Object.values(PrismaHistoryAction) as readonly HistoryAction[];
+export const HistoryActionSchema = z.nativeEnum(PrismaHistoryAction);
 
-export const Severities = ["LOW", "MEDIUM", "HIGH", "CRITICAL"] as const;
-export type Severity = (typeof Severities)[number];
-export const SeveritySchema = z.enum(Severities);
+export type Severity = PrismaSeverity;
+export const Severities = Object.values(PrismaSeverity) as readonly Severity[];
+export const SeveritySchema = z.nativeEnum(PrismaSeverity);
 
-export const Priorities = ["LOW", "MEDIUM", "HIGH", "CRITICAL"] as const;
-export type Priority = (typeof Priorities)[number];
-export const PrioritySchema = z.enum(Priorities);
+export type Priority = PrismaPriority;
+export const Priorities = Object.values(PrismaPriority) as readonly Priority[];
+export const PrioritySchema = z.nativeEnum(PrismaPriority);
 
-export const IssueStatuses = ["OPEN", "IN_PROGRESS", "RESOLVED", "CLOSED"] as const;
-export type IssueStatus = (typeof IssueStatuses)[number];
-export const IssueStatusSchema = z.enum(IssueStatuses);
+export type IssueStatus = PrismaIssueStatus;
+export const IssueStatuses = Object.values(PrismaIssueStatus) as readonly IssueStatus[];
+export const IssueStatusSchema = z.nativeEnum(PrismaIssueStatus);
 
-export const RiskStatuses = ["IDENTIFIED", "ANALYZING", "MITIGATING", "ACCEPTED", "CLOSED"] as const;
-export type RiskStatus = (typeof RiskStatuses)[number];
-export const RiskStatusSchema = z.enum(RiskStatuses);
+export type RiskStatus = PrismaRiskStatus;
+export const RiskStatuses = Object.values(PrismaRiskStatus) as readonly RiskStatus[];
+export const RiskStatusSchema = z.nativeEnum(PrismaRiskStatus);
 
-export const ActionStatuses = ["OPEN", "IN_PROGRESS", "DONE", "CANCELLED"] as const;
-export type ActionStatus = (typeof ActionStatuses)[number];
-export const ActionStatusSchema = z.enum(ActionStatuses);
+export type ActionStatus = PrismaActionStatus;
+export const ActionStatuses = Object.values(PrismaActionStatus) as readonly ActionStatus[];
+export const ActionStatusSchema = z.nativeEnum(PrismaActionStatus);
 
-export const ChangeRequestStatuses = [
-  "OPEN",
-  "UNDER_REVIEW",
-  "APPROVED",
-  "IN_IMPLEMENTATION",
-  "IMPLEMENTED",
-  "REJECTED",
-  "CANCELLED",
-] as const;
-export type ChangeRequestStatus = (typeof ChangeRequestStatuses)[number];
-export const ChangeRequestStatusSchema = z.enum(ChangeRequestStatuses);
+export type ChangeRequestStatus = PrismaChangeRequestStatus;
+export const ChangeRequestStatuses = Object.values(PrismaChangeRequestStatus) as readonly ChangeRequestStatus[];
+export const ChangeRequestStatusSchema = z.nativeEnum(PrismaChangeRequestStatus);
 
-export const ImportSources = ["EXCEL", "MSPROJECT_XML", "MANUAL"] as const;
-export type ImportSource = (typeof ImportSources)[number];
-export const ImportSourceSchema = z.enum(ImportSources);
+export type ImportSource = PrismaImportSource;
+export const ImportSources = Object.values(PrismaImportSource) as readonly ImportSource[];
+export const ImportSourceSchema = z.nativeEnum(PrismaImportSource);
 
-export const ImportTemplates = ["IS", "RK", "AC", "CR", "TK", "TC"] as const;
-export type ImportTemplate = (typeof ImportTemplates)[number];
-export const ImportTemplateSchema = z.enum(ImportTemplates);
+export type ImportTemplate = PrismaImportTemplate;
+export const ImportTemplates = Object.values(PrismaImportTemplate) as readonly ImportTemplate[];
+export const ImportTemplateSchema = z.nativeEnum(PrismaImportTemplate);
 
-export const ImportModes = ["REPLACE", "MERGE", "ONLY_NEW"] as const;
-export type ImportMode = (typeof ImportModes)[number];
-export const ImportModeSchema = z.enum(ImportModes);
+export type ImportMode = PrismaImportMode;
+export const ImportModes = Object.values(PrismaImportMode) as readonly ImportMode[];
+export const ImportModeSchema = z.nativeEnum(PrismaImportMode);

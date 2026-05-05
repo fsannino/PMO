@@ -1,0 +1,43 @@
+# Para desenvolvimento local (sobe Postgres + app).
+# Para subir só o banco (recomendado durante dev):  docker compose up -d db
+# Para subir tudo (testar como prod):                docker compose up --build
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: collabz-db
+    environment:
+      POSTGRES_USER: collabz
+      POSTGRES_PASSWORD: collabz
+      POSTGRES_DB: collabz
+    ports:
+      - "5432:5432"
+    volumes:
+      - collabz-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U collabz -d collabz"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: collabz-app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://collabz:collabz@db:5432/collabz?schema=public
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-dev-secret-change-me}
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+    # Para regenerar o seed dentro do container:
+    #   docker compose exec app npx prisma migrate deploy
+    #   docker compose exec app npx tsx scripts/seed.ts
+
+volumes:
+  collabz-db-data:
