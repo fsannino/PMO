@@ -4,6 +4,9 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { hasAccess } from "@/lib/access";
 import { ModuleSchema } from "@/lib/enums";
+
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 import {
   REPORTS,
   reportHeader,
