@@ -13,13 +13,14 @@ export default async function ProjectLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   const session = await getServerSession(authOptions);
   if (!session?.user) return null;
 
   const project = await prisma.project.findUnique({
-    where: { id: params.id },
+    where: { id },
     select: { id: true, code: true, name: true, module: true },
   });
   if (!project) notFound();

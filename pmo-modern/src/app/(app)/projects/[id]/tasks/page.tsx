@@ -8,12 +8,13 @@ import { TaskTreeView, type TaskRow } from "@/components/tasks/TaskTreeView";
 
 export const metadata = { title: "Tarefas — CollabZ" };
 
-export default async function TasksPage({ params }: { params: { id: string } }) {
+export default async function TasksPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const session = await getServerSession(authOptions);
   if (!session?.user) return null;
 
   const project = await prisma.project.findUnique({
-    where: { id: params.id },
+    where: { id },
     select: { id: true, module: true },
   });
   if (!project) notFound();

@@ -12,16 +12,18 @@ export default async function SynopticPage({
   params,
   searchParams,
 }: {
-  params: { id: string };
-  searchParams: { g?: string };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ g?: string }>;
 }) {
+  const { id } = await params;
+  const { g } = await searchParams;
   const project = await prisma.project.findUnique({
-    where: { id: params.id },
+    where: { id },
     select: { id: true },
   });
   if (!project) notFound();
 
-  const granularity = searchParams.g === "month" ? "month" : "week";
+  const granularity = g === "month" ? "month" : "week";
 
   const [curva, equipes, heat] = await Promise.all([
     computeCurvaS(project.id, granularity),
