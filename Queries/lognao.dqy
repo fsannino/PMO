@@ -1,7 +1,0 @@
-XLODBC
-1
-DSN=ss;Description=ss;UID=pmo_light;APP=Microsoft Office 2003;WSID=LIGHT-TATA061;DATABASE=PMO;Network=DBMSSOCN;Address=sssmr01,3971
-SELECT a.task_uid, A.task_pct_comp, A.task_name, A.TASK_START_DATE, B.TEXT_VALUE  FROM MSP_tasks AS A, msp_text_fields AS B, FLAGCURVA AS C  WHERE B.TEXT_FIELD_ID = 188744014  AND A.TASK_UID = B.Text_REF_UID  AND a.Task_uid = c.Flag_ref_uid  and b.text_ref_uid = c.flag_ref_uid  and c.conv_string='Task Flag3'  and a.task_start_date < {ts '2005-03-16 23:59:59'}  and  a.task_pct_comp between 0 and 99  and a.task_name not in (select task_name from dadosLog2 where  data_atualizacao between  {ts '2005-03-16 00:00:00'} and {ts '2005-03-16 23:59:59'})  ORDER BY 3;  
-
-
-task_uid	task_pct_comp	task_name	TASK_START_DATE	TEXT_VALUE
