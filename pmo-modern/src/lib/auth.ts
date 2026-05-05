@@ -26,6 +26,10 @@ declare module "next-auth/jwt" {
 }
 
 export const authOptions: NextAuthOptions = {
+  // Garante que o build não quebra se NEXTAUTH_SECRET não estiver presente
+  // em build-time (Vercel coleta page data antes de injetar runtime envs).
+  // Em runtime, sempre usa o valor real de NEXTAUTH_SECRET.
+  secret: process.env.NEXTAUTH_SECRET ?? "build-time-placeholder-replace-in-production",
   session: { strategy: "jwt" },
   pages: { signIn: "/login" },
   providers: [
