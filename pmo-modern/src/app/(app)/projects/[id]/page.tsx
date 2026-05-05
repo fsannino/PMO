@@ -7,11 +7,12 @@ import { projectScorecard } from "@/lib/scorecard";
 export default async function ProjectDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   const [project, scorecard] = await Promise.all([
     prisma.project.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         unidade: true,
         governanca: true,
@@ -27,7 +28,7 @@ export default async function ProjectDetailPage({
         },
       },
     }),
-    projectScorecard(params.id),
+    projectScorecard(id),
   ]);
   if (!project) notFound();
 

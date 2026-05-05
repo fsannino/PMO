@@ -22,13 +22,14 @@ export const metadata = { title: "Preview de relatório — CollabZ" };
 export default async function ReportPreviewPage({
   params,
 }: {
-  params: { id: string; reportId: string };
+  params: Promise<{ id: string; reportId: string }>;
 }) {
-  if (!(params.reportId in REPORTS)) notFound();
-  const reportId = params.reportId as ReportId;
+  const { id, reportId: reportIdRaw } = await params;
+  if (!(reportIdRaw in REPORTS)) notFound();
+  const reportId = reportIdRaw as ReportId;
   const cfg = REPORTS[reportId];
 
-  const project = await prisma.project.findUnique({ where: { id: params.id }, select: { id: true } });
+  const project = await prisma.project.findUnique({ where: { id }, select: { id: true } });
   if (!project) notFound();
 
   const session = await getServerSession(authOptions);
