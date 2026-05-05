@@ -3,6 +3,10 @@ import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { AppShell } from "@/components/AppShell";
 
+// Toda área autenticada é dinâmica (depende de session + DB).
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function AuthenticatedLayout({
   children,
 }: {

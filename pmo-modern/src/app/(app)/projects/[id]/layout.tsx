@@ -8,6 +8,9 @@ import { ProjectTabs } from "@/components/ProjectTabs";
 import { ModuleBanner } from "@/components/ModuleBanner";
 import { getModuleConfig } from "@/lib/modules";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function ProjectLayout({
   children,
   params,
