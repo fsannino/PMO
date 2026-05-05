@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // standalone: gera .next/standalone com server.js auto-contido (Docker/Vercel)
-  output: "standalone",
-  // serverActions são habilitadas por padrão desde Next 14.2; o body limit
-  // foi movido para o nível raiz da config:
+  // standalone: gera .next/standalone com server.js auto-contido (Docker).
+  // Na Vercel não é necessário — ela usa o output padrão (.next).
+  // Ativar só quando rodando build para Docker (DOCKER_BUILD=1).
+  output: process.env.DOCKER_BUILD === "1" ? "standalone" : undefined,
   experimental: {
     serverActions: {
       bodySizeLimit: "20mb",
