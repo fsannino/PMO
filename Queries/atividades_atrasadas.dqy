@@ -1,7 +1,0 @@
-XLODBC
-1
-DSN=ss;Description=ss;UID=pmo_light;APP=Microsoft Office 2003;WSID=LIGHT-TATA061;DATABASE=PMO;Network=DBMSSOCN;Address=sssmr01,3971
- SELECT a.task_uid, A.task_pct_comp, A.task_name, A.TASK_START_DATE, A.TASK_FINISH_DATE, B.LINK_PRED_UID   FROM MSP_tasks AS A, msp_LINKS AS B   WHERE a.TASK_UID = B.LINK_SUCC_UID   and a.task_finish_date < {ts '2005-04-06 00:00:00'}   and  a.task_pct_comp between 0 and 99  
-
-
-task_uid	task_pct_comp	task_name	TASK_START_DATE	TASK_FINISH_DATE	LINK_PRED_UID
