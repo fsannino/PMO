@@ -25,13 +25,14 @@ const VALID_IDS = new Set(Object.keys(REPORTS) as ReportId[]);
 
 export async function GET(
   req: Request,
-  { params }: { params: { projectId: string; reportId: string } },
+  { params }: { params: Promise<{ projectId: string; reportId: string }> },
 ) {
   const session = await getServerSession(authOptions);
   if (!session?.user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
+  const { projectId, reportId: reportIdParam } = await params;
   const project = await prisma.project.findUnique({
-    where: { id: params.projectId },
+    where: { id: projectId },
     select: { id: true, code: true, module: true },
   });
   if (!project) return NextResponse.json({ error: "project not found" }, { status: 404 });
@@ -40,10 +41,10 @@ export async function GET(
   const ok = await hasAccess(session.user.id, project.id, moduleParsed.data, "read");
   if (!ok) return NextResponse.json({ error: "forbidden" }, { status: 403 });
 
-  if (!VALID_IDS.has(params.reportId as ReportId)) {
+  if (!VALID_IDS.has(reportIdParam as ReportId)) {
     return NextResponse.json({ error: "invalid report" }, { status: 400 });
   }
-  const reportId = params.reportId as ReportId;
+  const reportId = reportIdParam as ReportId;
 
   const url = new URL(req.url);
   const format = (url.searchParams.get("format") ?? "xlsx").toLowerCase();

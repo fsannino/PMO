@@ -8,12 +8,13 @@ import { ModuleSchema } from "@/lib/enums";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-export async function GET(_req: Request, { params }: { params: { id: string } }) {
+export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await getServerSession(authOptions);
   if (!session?.user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
+  const { id } = await params;
   const task = await prisma.task.findUnique({
-    where: { id: params.id },
+    where: { id },
     select: { projectId: true, project: { select: { module: true } } },
   });
   if (!task) return NextResponse.json({ error: "not_found" }, { status: 404 });
@@ -25,7 +26,7 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
   if (!ok) return NextResponse.json({ error: "forbidden" }, { status: 403 });
 
   const entries = await prisma.taskHistory.findMany({
-    where: { taskId: params.id },
+    where: { taskId: id },
     include: { user: { select: { name: true } } },
     orderBy: { createdAt: "desc" },
     take: 200,
