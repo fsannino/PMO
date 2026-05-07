@@ -7,11 +7,12 @@ import { buildTemplateXlsx } from "@/lib/import-excel";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-export async function GET(_req: Request, { params }: { params: { kind: string } }) {
+export async function GET(_req: Request, { params }: { params: Promise<{ kind: string }> }) {
   const session = await getServerSession(authOptions);
   if (!session?.user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
-  const parsed = ImportTemplateSchema.safeParse(params.kind.toUpperCase());
+  const { kind } = await params;
+  const parsed = ImportTemplateSchema.safeParse(kind.toUpperCase());
   if (!parsed.success) return NextResponse.json({ error: "invalid template" }, { status: 400 });
 
   const buffer = buildTemplateXlsx(parsed.data);
