@@ -10,9 +10,11 @@ import {
   GitPullRequestArrow,
   FileBarChart,
   Settings,
+  LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Role } from "@/lib/enums";
+import { signOut } from "next-auth/react";
 
 type NavItem = {
   href: string;
@@ -36,33 +38,48 @@ export function Sidebar({ role }: { role: Role }) {
   const items = ITEMS.filter((i) => !i.adminOnly || role === "ADMIN");
 
   return (
-    <aside className="hidden w-60 shrink-0 border-r bg-white md:block">
-      <div className="flex h-14 items-center border-b px-4">
-        <span className="text-lg font-semibold text-brand-700">PMO CollabZ</span>
+    <aside className="hidden w-64 shrink-0 flex-col bg-blue-900 text-white md:flex">
+      <div className="flex h-14 items-center border-b border-blue-800 px-6">
+        <div>
+          <p className="text-lg font-bold leading-tight">PMO CollabZ</p>
+          <p className="text-xs text-blue-300">Gestão de Projetos</p>
+        </div>
       </div>
-      <nav className="space-y-1 p-3">
+
+      <nav className="flex-1 space-y-1 px-3 py-4">
         {items.map((item) => {
           const Icon = item.icon;
-          const active = item.href === "/"
-            ? pathname === "/"
-            : pathname === item.href || pathname.startsWith(item.href + "/");
+          const active =
+            item.href === "/"
+              ? pathname === "/"
+              : pathname === item.href || pathname.startsWith(item.href + "/");
           return (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 rounded-md px-3 py-2 text-sm",
+                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                 active
-                  ? "bg-brand-50 font-medium text-brand-700"
-                  : "text-slate-700 hover:bg-slate-100",
+                  ? "bg-blue-700 text-white"
+                  : "text-blue-200 hover:bg-blue-800 hover:text-white",
               )}
             >
-              <Icon className="h-4 w-4" />
+              <Icon className="h-4 w-4 shrink-0" />
               {item.label}
             </Link>
           );
         })}
       </nav>
+
+      <div className="border-t border-blue-800 px-3 py-4">
+        <button
+          onClick={() => signOut({ callbackUrl: "/login" })}
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-blue-200 transition-colors hover:bg-blue-800 hover:text-white"
+        >
+          <LogOut className="h-4 w-4 shrink-0" />
+          Sair
+        </button>
+      </div>
     </aside>
   );
 }
