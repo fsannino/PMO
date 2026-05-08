@@ -6,16 +6,16 @@ export default {
     extend: {
       colors: {
         brand: {
-          50: "#eef6ff",
-          100: "#d9eaff",
-          500: "#2f6feb",
-          600: "#1f56c8",
-          700: "#1a47a3",
-          900: "#102a5e",
+          50: "#eff6ff",
+          100: "#dbeafe",
+          500: "#3b82f6",
+          600: "#2563eb",
+          700: "#1d4ed8",
+          900: "#1e3a8a",
         },
       },
       fontFamily: {
-        sans: ["ui-sans-serif", "system-ui", "Inter", "Arial", "sans-serif"],
+        sans: ["var(--font-geist-sans)", "ui-sans-serif", "system-ui", "Arial", "sans-serif"],
       },
     },
   },

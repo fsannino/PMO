@@ -10,5 +10,9 @@ export default async function AuthenticatedLayout({
 }) {
   const session = await getServerSession(authOptions);
   if (!session?.user) redirect("/login");
-  return <AppShell role={session.user.role}>{children}</AppShell>;
+  return (
+    <AppShell user={{ name: session.user.name, email: session.user.email, role: session.user.role }}>
+      {children}
+    </AppShell>
+  );
 }
