@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { StatusBadge } from "@/components/work-items/StatusBadge";
 
-export const metadata = { title: "Riscos — Collab:Build" };
+export const metadata = { title: "Riscos" };
 
 export default async function GlobalRisksPage() {
   const session = await getServerSession(authOptions);

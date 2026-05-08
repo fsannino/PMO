@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
-export const metadata = { title: "Entrar — Collab:Build" };
+export const metadata = { title: "Entrar" };
 
 export default async function LoginPage() {
   const session = await getServerSession(authOptions);

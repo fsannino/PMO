@@ -6,7 +6,7 @@ import { PrevRealBars } from "@/components/synoptic/PrevRealBars";
 import { AtrasoHeatmap } from "@/components/synoptic/AtrasoHeatmap";
 import { SynopticToolbar } from "@/components/synoptic/SynopticToolbar";
 
-export const metadata = { title: "Painel Sinóptico — Collab:Build" };
+export const metadata = { title: "Painel Sinóptico" };
 
 export default async function SynopticPage({
   params,

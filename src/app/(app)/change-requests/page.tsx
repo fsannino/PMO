@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { StatusBadge } from "@/components/work-items/StatusBadge";
 
-export const metadata = { title: "Change Requests — Collab:Build" };
+export const metadata = { title: "Change Requests" };
 
 export default async function GlobalCRsPage() {
   const session = await getServerSession(authOptions);

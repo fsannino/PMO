@@ -7,7 +7,7 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { ImportPanel } from "@/components/import/ImportPanel";
 
-export const metadata = { title: "Importar — Collab:Build" };
+export const metadata = { title: "Importar" };
 
 export default async function ImportPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

@@ -6,7 +6,7 @@ import { ModuleSchema } from "@/lib/enums";
 import { notFound, redirect } from "next/navigation";
 import { IssuesList, type IssueRow } from "@/components/work-items/IssuesList";
 
-export const metadata = { title: "Issues — Collab:Build" };
+export const metadata = { title: "Issues" };
 
 export default async function ProjectIssuesPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
