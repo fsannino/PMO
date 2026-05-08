@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { StatusBadge } from "@/components/work-items/StatusBadge";
 
-export const metadata = { title: "Issues — CollabZ" };
+export const metadata = { title: "Issues — Collab:Build" };
 
 export default async function GlobalIssuesPage() {
   const session = await getServerSession(authOptions);

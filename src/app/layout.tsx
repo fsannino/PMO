@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: { default: "PMO CollabZ", template: "%s — PMO CollabZ" },
+  title: { default: "Collab:Build", template: "%s — Collab:Build" },
   description: "Sistema integrado de gestão de projetos",
 };
 

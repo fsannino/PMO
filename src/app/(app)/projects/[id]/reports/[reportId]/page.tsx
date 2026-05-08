@@ -17,7 +17,7 @@ import {
 } from "@/lib/reports";
 import { StatusBadge } from "@/components/work-items/StatusBadge";
 
-export const metadata = { title: "Preview de relatório — CollabZ" };
+export const metadata = { title: "Preview de relatório — Collab:Build" };
 
 export default async function ReportPreviewPage({
   params,
