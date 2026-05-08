@@ -1,7 +1,0 @@
-XLODBC
-1
-DSN=ss;Description=ss;UID=PMO_LIGHT;APP=Microsoft Office 2003;WSID=LIGHT-TATA061;DATABASE=PMO;Network=DBMSSOCN;Address=sssmr01,3971
-SELECT pre_equipes.task_id, pre_equipes.task_uid, pre_equipes.task_is_summary, pre_equipes.task_pct_comp, pre_equipes.task_name, pre_equipes.TASK_START_DATE, pre_equipes.TASK_FINISH_DATE, pre_equipes.text_value, pre_produto.text_value, pre_equipes.LINK_PRED_UID  FROM PMO.dbo.pre_equipes pre_equipes, PMO.dbo.pre_fase pre_fase, PMO.dbo.pre_produto pre_produto  WHERE pre_equipes.task_uid = pre_produto.task_uid AND pre_produto.task_uid = pre_fase.task_uid AND ((pre_fase.text_value='3 - Realização') AND (pre_equipes.text_value='DES-DES'))
-
-
-task_id	task_uid	task_is_summary	task_pct_comp	task_name	TASK_START_DATE	TASK_FINISH_DATE	text_value	text_value	LINK_PRED_UID

@@ -1,6 +1,0 @@
-frmPrincipal = 110, 110, 589, 554, , 44, 44, 523, 488, C
-mdlGobal = 132, 132, 611, 576, Z
-frmCadUsuarios = 198, 198, 953, 642, C, 66, 66, 545, 510, C
-frmCadConfigFechamento = 176, 176, 655, 620, C, 88, 88, 567, 532, C
-frmImpArq = 66, 66, 392, 412, C, 22, 22, 348, 368, C
-frmCargaPMOnline = 88, 93, 381, 408, C, 44, 44, 340, 364, C
