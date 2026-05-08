@@ -6,7 +6,7 @@ import { ModuleSchema } from "@/lib/enums";
 import { notFound, redirect } from "next/navigation";
 import { CRsList, type CRRow } from "@/components/work-items/CRsList";
 
-export const metadata = { title: "Change Requests — CollabZ" };
+export const metadata = { title: "Change Requests — Collab:Build" };
 
 export default async function ProjectCRsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

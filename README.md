@@ -1,8 +1,8 @@
-# PMO — CollabZ
+# PMO — Collab:Build
 
 Repositório que contém **dois sistemas**:
 
-1. **Legado (Classic ASP + VB6, ~2003-2005)** — código original do PMO CollabZ.
+1. **Legado (Classic ASP + VB6, ~2003-2005)** — código original do Collab:Build.
 2. **`pmo-modern/`** — reescrita moderna em **Next.js + TypeScript + Prisma**, com as funcionalidades essenciais reimplementadas: cadastro de projetos e tarefas, medições, issues, riscos, importação de cronograma a partir de **Excel** e **MS Project (XML)**, visualização **Gantt**, relatórios e tela de manutenção.
 
 ---

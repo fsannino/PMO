@@ -48,7 +48,7 @@ export function AppShell({
                 </>
               ) : (
                 <span className="text-xs font-semibold uppercase tracking-widest text-slate-400">
-                  PMO CollabZ
+                  Collab:Build
                 </span>
               )}
             </div>

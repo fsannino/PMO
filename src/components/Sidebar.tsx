@@ -52,7 +52,7 @@ export function Sidebar({ role }: { role: Role }) {
       <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4">
         <PmoLogo />
         <div>
-          <p className="text-base font-bold leading-tight tracking-wide">PMO CollabZ</p>
+          <p className="text-base font-bold leading-tight tracking-wide">Collab:Build</p>
           <p className="text-[10px] uppercase tracking-widest text-slate-400">
             Gestão de Projetos
           </p>
@@ -95,7 +95,7 @@ export function Sidebar({ role }: { role: Role }) {
           <Power className="h-4 w-4 shrink-0" />
           Sair
         </button>
-        <p className="mt-3 text-center text-[10px] text-slate-600">© 2026 PMO CollabZ</p>
+        <p className="mt-3 text-center text-[10px] text-slate-600">© 2026 Collab:Build</p>
       </div>
     </aside>
   );

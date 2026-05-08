@@ -2,7 +2,7 @@
   "name": "pmo-modern",
   "version": "0.1.0",
   "private": true,
-  "description": "PMO CollabZ — versão moderna em Next.js + TypeScript + Prisma",
+  "description": "Collab:Build — versão moderna em Next.js + TypeScript + Prisma",
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",

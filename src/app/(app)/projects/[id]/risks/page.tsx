@@ -6,7 +6,7 @@ import { ModuleSchema } from "@/lib/enums";
 import { notFound, redirect } from "next/navigation";
 import { RisksList, type RiskRow } from "@/components/work-items/RisksList";
 
-export const metadata = { title: "Riscos — CollabZ" };
+export const metadata = { title: "Riscos — Collab:Build" };
 
 export default async function ProjectRisksPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

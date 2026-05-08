@@ -1,4 +1,4 @@
-# OPERATIONS — CollabZ
+# OPERATIONS — Collab:Build
 
 Runbook operacional: dev local, deploy em produção (Vercel + Supabase),
 backup, restore, migrations.
