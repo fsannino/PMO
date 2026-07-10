@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export const metadata = { title: "Acesso negado — Collab:Build" };
+export const metadata = { title: "Acesso negado" };
 
 export default function ForbiddenPage() {
   return (

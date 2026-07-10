@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 
-export const metadata = { title: "Histórico de importações — Collab:Build" };
+export const metadata = { title: "Histórico de importações" };
 
 const SOURCE_LABEL: Record<string, string> = {
   EXCEL: "Excel",

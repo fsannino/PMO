@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { GanttChart, type GanttTask } from "@/components/gantt/GanttChart";
 import { buildTree, flattenTree } from "@/lib/task-tree";
 
-export const metadata = { title: "Gantt — Collab:Build" };
+export const metadata = { title: "Gantt" };
 
 export default async function GanttPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

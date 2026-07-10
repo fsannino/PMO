@@ -7,7 +7,7 @@ import { notFound, redirect } from "next/navigation";
 import { MeasurementGrid, type MeasurementRow } from "@/components/measurement/MeasurementGrid";
 import { getMeasurementWindow, periodOf } from "@/lib/closing-window";
 
-export const metadata = { title: "Medição — Collab:Build" };
+export const metadata = { title: "Medição" };
 
 export default async function MeasurementPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

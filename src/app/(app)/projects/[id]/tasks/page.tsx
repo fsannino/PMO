@@ -6,7 +6,7 @@ import { ModuleSchema } from "@/lib/enums";
 import { notFound, redirect } from "next/navigation";
 import { TaskTreeView, type TaskRow } from "@/components/tasks/TaskTreeView";
 
-export const metadata = { title: "Tarefas — Collab:Build" };
+export const metadata = { title: "Tarefas" };
 
 export default async function TasksPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

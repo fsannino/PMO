@@ -6,7 +6,7 @@ import { FolderKanban, AlertTriangle, Bug, GitPullRequestArrow } from "lucide-re
 import { projectScorecard } from "@/lib/scorecard";
 import { cn } from "@/lib/utils";
 
-export const metadata = { title: "Dashboard — Collab:Build" };
+export const metadata = { title: "Dashboard" };
 
 async function loadDashboard(userId: string, isAdmin: boolean) {
   // ADMIN vê tudo; demais veem só projetos onde é membro/tem access.

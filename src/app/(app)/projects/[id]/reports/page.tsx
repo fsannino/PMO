@@ -2,7 +2,7 @@ import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { ReportsGallery } from "@/components/reports/ReportsGallery";
 
-export const metadata = { title: "Relatórios — Collab:Build" };
+export const metadata = { title: "Relatórios" };
 
 export default async function ProjectReportsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { FileBarChart } from "lucide-react";
 
-export const metadata = { title: "Relatórios — Collab:Build" };
+export const metadata = { title: "Relatórios" };
 
 export default async function GlobalReportsPage() {
   const session = await getServerSession(authOptions);
